@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Você, Com Carinho</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/favicon.png" type="image/png">
+</head>
+<body>
+    <div id="loading-screen" class="loading-screen">
+        <div class="spinner"></div>
+        <p>Carregando um pedacinho do coração...</p>
+    </div>
+
+    <main id="main-content" class="hidden">
+        <img src="assets/background.jpg" alt="Fundo com tons suaves de roxo e verde" class="background-image">
+
+        <div class="card-wrapper" id="initial-card-wrapper">
+            <div class="initial-card" id="initial-card">
+                <h2>Há algo especial para você...</h2>
+                <button id="open-letter-btn">Abrir Carta</button>
+            </div>
+        </div>
+
+        <div class="letter-container" id="letter-container">
+            <h1 class="letter-title">Você em Palavras</h1>
+            <div class="scroll-indicator" id="scroll-indicator">
+                <p>Deslize para ler mais <span class="arrow">&#8595;</span></p>
+            </div>
+            <section class="letter-content" id="letter-content">
+                </section>
+            <div class="letter-footer">
+                <p class="signature"></p>
+                <p class="ps-note"></p>
+                <p class="final-message"></p>
+            </div>
+             <button id="read-again-btn" class="read-again-btn hidden">Ler Novamente</button>
+        </div>
+    </main>
+
+    <div id="floating-hearts-container"></div>
+    <audio id="background-music" loop>
+        <source src="assets/music.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio.
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
