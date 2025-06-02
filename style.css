@@ -1,0 +1,344 @@
+:root {
+    --primary-color: #a2d9a2; /* Verde claro */
+    --secondary-color: #4c1d95; /* Roxo escuro */
+    --text-color: #ffffff;
+    --bg-gradient-start: #4c1d95;
+    --bg-gradient-end: #1e1e2f;
+    --card-bg: rgba(255, 255, 255, 0.08);
+    --card-border: 2px solid var(--primary-color);
+    --shadow-light: rgba(162, 217, 162, 0.2);
+    --shadow-dark: rgba(0, 0, 0, 0.4);
+    --accent-color: #ff6b81; /* Corações */
+}
+
+/* Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden; /* Controlado pelo JS após carregamento */
+    position: relative;
+}
+
+/* Loading Screen */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    transition: opacity 1s ease-out;
+}
+
+.spinner {
+    border: 6px solid rgba(255, 255, 255, 0.3);
+    border-top: 6px solid var(--primary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Main Content */
+.hidden {
+    display: none;
+}
+
+.background-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.3;
+    filter: blur(3px);
+    transition: opacity 1s ease, filter 1s ease;
+}
+
+main {
+    width: 100%;
+    max-width: 800px; /* Aumentado para mais espaço */
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Initial Card */
+.card-wrapper {
+    perspective: 1000px; /* Para a animação 3D */
+    width: 100%;
+    max-width: 500px;
+}
+
+.initial-card {
+    background: var(--card-bg);
+    border: var(--card-border);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    text-align: center;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 20px var(--shadow-light);
+    transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+    transform-style: preserve-3d;
+}
+
+.initial-card h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.8rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 5px var(--shadow-dark);
+}
+
+#open-letter-btn, .read-again-btn {
+    background: var(--primary-color);
+    color: var(--bg-gradient-end); /* Cor de texto que contrasta com o verde */
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+#open-letter-btn:hover, .read-again-btn:hover {
+    background: #8ccf8c;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* Letter Container (Poema) */
+.letter-container {
+    display: none; /* Inicialmente oculto */
+    padding: 2rem 1rem;
+    background: var(--card-bg);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+    width: 100%;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+    position: relative; /* Para o indicador de scroll */
+}
+
+.letter-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.letter-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 1.8rem;
+    color: var(--primary-color);
+    text-shadow: 0 1px 3px var(--shadow-dark);
+}
+
+.scroll-indicator {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    animation: fade-in-out 2s infinite;
+    font-size: 1.1rem;
+}
+
+.scroll-indicator .arrow {
+    display: inline-block;
+    animation: bounce 1s infinite;
+}
+
+@keyframes fade-in-out {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+}
+
+.letter-content {
+    max-height: 65vh; /* Ajuste para melhor visualização */
+    overflow-y: scroll;
+    padding-right: 1.2rem; /* Espaço para a barra de rolagem */
+    scrollbar-width: thin; /* Para Firefox */
+    scrollbar-color: var(--primary-color) rgba(255, 255, 255, 0.1);
+}
+
+/* Webkit Scrollbar */
+.letter-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.letter-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.letter-content::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.letter-content p {
+    margin-bottom: 1.4rem;
+    line-height: 1.7;
+    font-size: 1rem;
+    opacity: 0; /* Controlado pelo JS para efeito de digitação/revelação */
+    transform: translateY(15px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    pointer-events: none; /* Previne seleção antes de aparecer */
+}
+
+.letter-content p.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.letter-footer {
+    margin-top: 2rem;
+    text-align: right;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.letter-footer .signature {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-family: 'Great Vibes', cursive; /* Para a assinatura */
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.letter-footer .ps-note, .letter-footer .final-message {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    opacity: 0; /* Controlado pelo JS */
+    transform: translateY(10px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Floating Hearts */
+#floating-hearts-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Garante que os corações não bloqueiem cliques */
+    overflow: hidden;
+    z-index: -2; /* Abaixo do background-image */
+}
+
+.heart {
+    position: absolute;
+    font-size: 2rem;
+    color: var(--accent-color);
+    opacity: 0;
+    animation: floatHeart 10s linear infinite;
+    text-shadow: 0 0 8px rgba(255, 107, 129, 0.5);
+}
+
+@keyframes floatHeart {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(calc(var(--rand-x) * 1px), -100vh) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    main {
+        padding: 1rem;
+    }
+
+    .initial-card h2 {
+        font-size: 2.2rem;
+    }
+
+    #open-letter-btn, .read-again-btn {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+    }
+
+    .letter-title {
+        font-size: 2rem;
+    }
+
+    .letter-content {
+        max-height: 70vh;
+    }
+
+    .letter-content p {
+        font-size: 0.95rem;
+    }
+
+    .heart {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .initial-card h2 {
+        font-size: 1.8rem;
+    }
+    .letter-title {
+        font-size: 1.8rem;
+    }
+    .scroll-indicator {
+        font-size: 1rem;
+    }
+    .letter-content p {
+        font-size: 0.9rem;
+    }
+    .letter-footer .signature {
+        font-size: 1.2rem;
+    }
+                    }
