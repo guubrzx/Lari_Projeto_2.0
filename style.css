@@ -1,0 +1,363 @@
+/* Variáveis para cores */
+:root {
+    --primary-color: #ff69b4; /* Rosa Quente */
+    --secondary-color: #f7aef8; /* Lilás Claro */
+    --text-color: #333;
+    --bg-dark: #0a0a2a; /* Azul Escuro para o espaço */
+    --bg-light: #fdf5e6; /* Creme para o fundo da carta */
+    --envelope-color: #d3a7e6; /* Um roxo suave para o envelope */
+    --envelope-shadow: #7e578c;
+}
+
+/* Base */
+body {
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-dark); /* Fundo inicial escuro */
+    overflow: hidden; /* Esconde barras de rolagem iniciais */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Loading Screen - Animação de Abertura */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: white;
+    font-family: 'Playfair Display', serif;
+}
+
+.galaxy-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: pulse 3s infinite ease-in-out;
+}
+
+.galaxy-bg {
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    object-fit: cover;
+    opacity: 0; /* Inicia invisível e é animado pelo JS */
+    animation: rotateGalaxy 30s linear infinite;
+}
+
+.blackhole-center {
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at center, #000 0%, #3a005c 70%, #6a008a 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 50px 20px rgba(100, 0, 150, 0.7);
+    z-index: 2;
+    transform: scale(0); /* Inicia invisível e é animado pelo JS */
+}
+
+.stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    /* Estrelas serão criadas com JS */
+}
+
+.loading-text {
+    margin-top: 30px;
+    font-size: 1.5em;
+    opacity: 0; /* Inicia invisível e é animado pelo JS */
+}
+
+@keyframes rotateGalaxy {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Conteúdo Principal */
+#main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    box-sizing: border-box;
+    opacity: 0; /* Inicia invisível */
+    transform: translateY(20px);
+}
+
+.header-animation h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3em;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 50px;
+    opacity: 0;
+    transform: translateY(-20px);
+    text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+}
+
+/* Envelope */
+#envelope-container {
+    position: relative;
+    width: 350px;
+    height: 200px;
+    perspective: 1000px; /* Para o efeito 3D da aba */
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: var(--envelope-color);
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease-in-out; /* Para girar o envelope */
+}
+
+.envelope .body {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--envelope-color);
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.envelope .flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background-color: var(--envelope-color);
+    border-radius: 0 0 10px 10px;
+    transform-origin: top;
+    transform: rotateX(0deg);
+    transition: transform 0.8s ease-in-out;
+    z-index: 3;
+    border-bottom: 2px solid var(--envelope-shadow);
+}
+
+.envelope .flap::before { /* Borda da aba */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0 0 10px 10px;
+    background: linear-gradient(135deg, transparent 49%, var(--envelope-shadow) 50%, var(--envelope-shadow) 51%, transparent 52%);
+    background-size: 100% 100%;
+    background-position: center bottom;
+    z-index: -1;
+}
+
+.envelope .shadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.1);
+    transform: translateZ(-10px) rotateX(10deg);
+    filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 0;
+}
+
+/* Envelope Aberto */
+.envelope.open .flap {
+    transform: rotateX(180deg);
+}
+
+.envelope.open .shadow {
+    opacity: 1;
+}
+
+#open-envelope-btn {
+    position: absolute;
+    bottom: -60px; /* Posição inicial abaixo do envelope */
+    left: 50%;
+    transform: translateX(-50%) scale(0); /* Começa invisível e pequeno */
+    padding: 15px 30px;
+    font-size: 1.2em;
+    font-family: 'Playfair Display', serif;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 4; /* Acima do envelope */
+}
+
+#open-envelope-btn img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1); /* Torna o SVG branco */
+}
+
+#open-envelope-btn:hover {
+    background-color: #e652a2;
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.6);
+    transform: translateX(-50%) scale(1.05);
+}
+
+/* Carta Aberta */
+#letter-container {
+    position: absolute;
+    top: 50%; /* Será ajustado com JS para sair do envelope */
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1); /* Começa pequena e centralizada */
+    width: 80%;
+    max-width: 700px;
+    background-color: var(--bg-light);
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    padding: 40px;
+    box-sizing: border-box;
+    z-index: 2; /* Atrás do envelope inicialmente */
+    opacity: 0;
+    transform-origin: center top;
+}
+
+.letter-paper {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto; /* Para scrollar o texto se for muito longo */
+    max-height: calc(100vh - 100px); /* Ajusta para caber na tela */
+    padding-right: 15px; /* Para não cortar o scrollbar */
+}
+
+.letter-header {
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--primary-color);
+    font-size: 1.2em;
+}
+
+.letter-body p {
+    margin-bottom: 1.2em;
+    text-align: justify;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.letter-body .signature {
+    text-align: right;
+    margin-top: 40px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3em;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.letter-body .ps {
+    text-align: right;
+    font-size: 0.9em;
+    color: var(--text-color);
+    margin-top: 10px;
+}
+
+.letter-body .signature-end {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 1.5em;
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .header-animation h1 {
+        font-size: 2.2em;
+    }
+
+    #envelope-container {
+        width: 300px;
+        height: 170px;
+    }
+
+    #open-envelope-btn {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+
+    #letter-container {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .letter-header {
+        font-size: 1em;
+    }
+
+    .letter-body p {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-animation h1 {
+        font-size: 1.8em;
+        margin-bottom: 30px;
+    }
+
+    #envelope-container {
+        width: 250px;
+        height: 150px;
+    }
+
+    #open-envelope-btn {
+        padding: 10px 20px;
+        font-size: 0.9em;
+        bottom: -50px;
+    }
+
+    #letter-container {
+        padding: 15px;
+    }
+}
