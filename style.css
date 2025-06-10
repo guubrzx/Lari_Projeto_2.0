@@ -1,23 +1,40 @@
-/* Variáveis para cores */
+/* --- Variáveis de Cores e Fontes --- */
 :root {
     --primary-color: #ff69b4; /* Rosa Quente */
-    --secondary-color: #f7aef8; /* Lilás Claro */
-    --text-color: #333;
-    --bg-dark: #0a0a2a; /* Azul Escuro para o espaço */
-    --bg-light: #fdf5e6; /* Creme suave para o fundo da carta */
-    --envelope-color: #d3a7e6; /* Um roxo suave para o envelope */
-    --envelope-shadow: #7e578c;
-    --border-radius-lg: 15px;
-    --border-radius-md: 10px;
+    --secondary-color: #9b59b6; /* Roxo vibrante */
+    --tertiary-color: #2ecc71; /* Verde esmeralda */
+    --text-dark: #2c3e50; /* Azul escuro quase preto */
+    --text-light: #ecf0f1; /* Cinza claro */
+    --bg-dark: #0f0a28; /* Fundo profundo do espaço */
+    --bg-light: #fefcfd; /* Branco suave para a carta */
+    --envelope-color: #9b59b6; /* Roxo do envelope */
+    --envelope-shadow: #6c3483; /* Sombra mais escura para o envelope */
+    --border-radius-lg: 1.5rem;
+    --border-radius-md: 1rem;
+
+    /* Fontes */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Open Sans', sans-serif;
+    --font-signature: 'Dancing Script', cursive;
+    --font-subtitle: 'Raleway', sans-serif;
 }
 
-/* Base */
-body {
+/* --- Base & Reset --- */
+*, *::before, *::after {
+    box-sizing: border-box;
     margin: 0;
-    font-family: 'Open Sans', sans-serif;
-    color: var(--text-color);
-    background-color: var(--bg-dark);
-    overflow: hidden; /* Esconde barras de rolagem iniciais */
+    padding: 0;
+}
+
+html {
+    font-size: 16px; /* Base para REM */
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--text-light); /* Cor do texto padrão para o fundo escuro */
+    background: linear-gradient(135deg, var(--bg-dark) 0%, #1a0f4a 100%); /* Gradiente sutil */
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,7 +49,7 @@ body {
     display: none;
 }
 
-/* Loading Screen - Animação de Abertura */
+/* --- Loading Screen: O Espetáculo Galáctico --- */
 #loading-screen {
     position: fixed;
     top: 0;
@@ -45,41 +62,42 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    color: white;
-    font-family: 'Playfair Display', serif;
+    color: var(--text-light);
+    font-family: var(--font-heading);
     text-align: center;
+    overflow: hidden; /* Garantir que as estrelas não vazem */
 }
 
 .galaxy-container {
     position: relative;
-    width: 250px; /* Ajustado para responsividade */
-    height: 250px; /* Ajustado para responsividade */
-    max-width: 80vw; /* Máximo 80% da largura da viewport */
-    max-height: 80vw;
+    width: 300px;
+    height: 300px;
+    max-width: 90vw;
+    max-height: 90vw;
     overflow: hidden;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: pulse 3s infinite ease-in-out;
+    box-shadow: 0 0 80px 30px rgba(155, 89, 182, 0.5); /* Sombra roxa vibrante */
 }
 
 .galaxy-bg {
     position: absolute;
-    width: 150%;
-    height: 150%;
+    width: 180%; /* Aumentado para preencher mais o espaço */
+    height: 180%;
     object-fit: cover;
-    opacity: 0; /* Inicia invisível e é animado pelo JS */
-    animation: rotateGalaxy 30s linear infinite;
-    filter: brightness(1.2); /* Mais brilho na galáxia */
+    opacity: 0;
+    animation: rotateGalaxy 40s linear infinite; /* Mais lento para ser majestoso */
+    filter: brightness(1.2) contrast(1.1); /* Mais brilho e contraste */
 }
 
 .blackhole-center {
-    width: 60px; /* Ajustado */
-    height: 60px; /* Ajustado */
-    background: radial-gradient(circle at center, #000 0%, #3a005c 70%, #6a008a 100%);
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at center, #000 0%, #3a005c 60%, #6a008a 100%);
     border-radius: 50%;
-    box-shadow: 0 0 40px 15px rgba(100, 0, 150, 0.7);
+    box-shadow: 0 0 60px 25px rgba(100, 0, 150, 0.8);
     z-index: 2;
     transform: scale(0);
 }
@@ -94,10 +112,11 @@ body {
 }
 
 .loading-text {
-    margin-top: 2rem;
-    font-size: 1.8rem;
+    margin-top: 2.5rem;
+    font-size: 2.2rem;
     opacity: 0;
-    text-shadow: 0 0 8px rgba(255,255,255,0.5);
+    text-shadow: 0 0 12px rgba(255,255,255,0.7);
+    letter-spacing: 0.08em;
 }
 
 @keyframes rotateGalaxy {
@@ -106,58 +125,78 @@ body {
 }
 
 @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    0% { transform: scale(1); box-shadow: 0 0 80px 30px rgba(155, 89, 182, 0.5); }
+    50% { transform: scale(1.03); box-shadow: 0 0 100px 40px rgba(155, 89, 182, 0.7); }
+    100% { transform: scale(1); box-shadow: 0 0 80px 30px rgba(155, 89, 182, 0.5); }
 }
 
-/* Conteúdo Principal */
+
+/* --- Main Content: A Palco da Emoção --- */
 #main-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* Alinhamento inicial */
     width: 100%;
-    max-width: 900px;
-    padding: 1.5rem; /* Ajustado com rem */
+    max-width: 1100px; /* Maior largura para telas grandes */
+    padding: 2rem 1.5rem;
     box-sizing: border-box;
     opacity: 0;
-    transform: translateY(20px);
-    color: white; /* Cor do texto no tema escuro */
+    transform: translateY(30px);
+    color: var(--text-light); /* Cor do texto no tema escuro */
+    min-height: 100vh; /* Para que o conteúdo não se "perca" em telas pequenas */
+    position: relative; /* Para posicionar a carta absolutamente */
 }
 
-.header-animation h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 3.5rem; /* Ajustado com rem */
-    color: var(--primary-color);
+.main-header {
     text-align: center;
-    margin-bottom: 3rem; /* Ajustado com rem */
-    opacity: 0;
-    transform: translateY(-30px);
-    text-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
-    letter-spacing: 0.05em; /* Pequeno espaçamento para melhor leitura */
+    margin-bottom: 4rem;
+    padding-top: 2rem; /* Espaçamento do topo */
 }
 
-/* Envelope Wrapper para posicionamento */
+.main-header h1 {
+    font-family: var(--font-heading);
+    font-size: 4.5rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+    opacity: 0; /* Animado pelo JS */
+    transform: translateY(-50px);
+}
+
+.main-header .subtitle {
+    font-family: var(--font-subtitle);
+    font-size: 1.6rem;
+    color: var(--secondary-color); /* Roxo */
+    text-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
+    letter-spacing: 0.05em;
+    opacity: 0; /* Animado pelo JS */
+    transform: translateY(30px);
+}
+
+/* --- Envelope Wrapper: A Caixa de Segredos --- */
 #envelope-wrapper {
     position: relative;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 3rem;
+    flex-grow: 1; /* Para empurrar para baixo e centralizar */
+    margin-bottom: 8rem; /* Espaço para o botão */
+    z-index: 10;
 }
 
-/* Envelope */
 #envelope-container {
     position: relative;
-    width: 380px; /* Tamanho base maior */
-    height: 220px;
-    perspective: 1000px;
+    width: 420px; /* Tamanho base maior para impacto */
+    height: 250px;
+    max-width: 90vw; /* Responsivo */
+    max-height: 55vw; /* Manter proporção em telas pequenas */
+    perspective: 1500px; /* Mais perspectiva para 3D */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
 }
 
 .envelope {
@@ -166,9 +205,10 @@ body {
     height: 100%;
     background-color: var(--envelope-color);
     border-radius: var(--border-radius-md);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     transform-style: preserve-3d;
     transition: transform 0.5s ease-in-out;
+    border: 2px solid var(--envelope-shadow); /* Borda sutil */
 }
 
 .envelope .body {
@@ -185,14 +225,14 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 55%; /* Mais da metade para melhor efeito */
+    height: 55%;
     background-color: var(--envelope-color);
     border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
     transform-origin: top;
     transform: rotateX(0deg);
     transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bounce effect */
     z-index: 3;
-    border-bottom: 2px solid var(--envelope-shadow);
+    border-bottom: 3px solid var(--envelope-shadow);
 }
 
 .envelope .flap::before {
@@ -214,12 +254,25 @@ body {
     width: 100%;
     height: 100%;
     border-radius: var(--border-radius-md);
-    background: rgba(0,0,0,0.15);
-    transform: translateZ(-15px) rotateX(15deg);
-    filter: blur(12px);
+    background: rgba(0,0,0,0.25);
+    transform: translateZ(-20px) rotateX(15deg);
+    filter: blur(15px);
     opacity: 0;
     transition: opacity 0.6s ease-in-out;
     z-index: 0;
+}
+
+.envelope .inner-shadow {
+    position: absolute;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    border-radius: var(--border-radius-md);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+    top: 5px;
+    left: 5px;
+    z-index: 2;
+    opacity: 0; /* Animado quando abre */
+    transition: opacity 0.5s ease-in-out;
 }
 
 /* Envelope Aberto */
@@ -231,291 +284,347 @@ body {
     opacity: 1;
 }
 
+.envelope.open .inner-shadow {
+    opacity: 1;
+}
+
 #open-envelope-btn {
     position: absolute;
-    bottom: -6rem; /* Ajustado com rem */
+    bottom: -6.5rem; /* Mais para baixo */
     left: 50%;
     transform: translateX(-50%) scale(0);
-    padding: 1rem 2rem; /* Ajustado com rem */
-    font-size: 1.3rem; /* Ajustado com rem */
-    font-family: 'Playfair Display', serif;
+    padding: 1rem 2.5rem;
+    font-size: 1.4rem;
+    font-family: var(--font-subtitle);
     background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.5);
-    transition: all 0.3s ease-in-out;
+    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.6);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    gap: 1rem;
     z-index: 11;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: bold;
 }
 
 #open-envelope-btn img {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.6rem;
+    height: 1.6rem;
     filter: brightness(0) invert(1);
+    transition: transform 0.3s ease-in-out;
 }
 
 #open-envelope-btn:hover {
     background-color: #e652a2;
-    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.8);
-    transform: translateX(-50%) scale(1.08);
+    box-shadow: 0 12px 30px rgba(255, 105, 180, 0.9);
+    transform: translateX(-50%) scale(1.1);
+}
+
+#open-envelope-btn:hover img {
+    transform: scale(1.2);
 }
 
 #open-envelope-btn:active {
-    transform: translateX(-50%) scale(0.98);
+    transform: translateX(-50%) scale(0.95);
 }
 
-/* Carta Aberta */
+/* --- Carta Aberta: O Toque Mágico --- */
 #letter-container {
-    position: absolute;
+    position: fixed; /* Fixa a carta na tela para evitar rolagem do body */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.1);
-    width: 90%; /* Ajustado para responsividade */
-    max-width: 760px; /* Aumentado para melhor leitura */
+    width: 95%; /* Ocupa quase toda a largura para mobile */
+    max-width: 800px; /* Maior largura para desktop */
+    height: 90%; /* Ocupa quase toda a altura para mobile */
+    max-height: 90vh; /* Limita a altura para desktop */
     background-color: var(--bg-light);
     border-radius: var(--border-radius-lg);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-    padding: 3rem 2.5rem; /* Ajustado com rem */
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    padding: 3.5rem 3rem; /* Padding generoso */
     box-sizing: border-box;
-    z-index: 100; /* Acima de tudo para a carta aberta */
+    z-index: 200; /* Acima de tudo */
     opacity: 0;
-    transform-origin: center top;
-    color: var(--text-color); /* Garante que o texto da carta seja escuro */
-    will-change: transform, opacity; /* Otimização de performance */
+    transform-origin: center center; /* Muda o ponto de origem para o centro */
+    display: flex; /* Para empilhar o canvas e o conteúdo */
+    flex-direction: column;
+    overflow: hidden; /* Para o canvas não vazar */
 }
 
-.letter-paper {
+#letter-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Fica atrás do conteúdo da carta */
+    border-radius: var(--border-radius-lg);
+    opacity: 0.7; /* Suaviza as partículas */
+}
+
+.letter-paper-content {
+    position: relative;
     height: 100%;
     width: 100%;
-    overflow-y: auto;
-    max-height: calc(100vh - 100px);
-    padding-right: 1rem; /* Espaço para o scrollbar */
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: var(--primary-color) #f1f1f1; /* Firefox */
+    overflow-y: auto; /* Apenas o conteúdo rola */
+    padding-right: 1.2rem; /* Espaço para o scrollbar */
+    color: var(--text-dark); /* Texto da carta escuro */
 }
 
-/* Custom scrollbar para Webkit browsers (Chrome, Safari) */
-.letter-paper::-webkit-scrollbar {
-    width: 8px;
+/* Custom scrollbar para Webkit browsers (Chrome, Safari, Edge) */
+.letter-paper-content::-webkit-scrollbar {
+    width: 10px;
 }
 
-.letter-paper::-webkit-scrollbar-track {
+.letter-paper-content::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 10px;
 }
 
-.letter-paper::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
+.letter-paper-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--secondary-color), var(--tertiary-color)); /* Gradiente na barra de rolagem */
     border-radius: 10px;
+    border: 1px solid var(--bg-light); /* Borda para contraste */
 }
 
-.letter-paper::-webkit-scrollbar-thumb:hover {
-    background: #e652a2;
+.letter-paper-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #a977c7, #3ac282);
 }
 
 .letter-header {
     text-align: center;
-    margin-bottom: 2.5rem;
-    font-family: 'Dancing Script', cursive; /* Nova fonte */
-    font-style: normal;
-    color: var(--primary-color);
-    font-size: 1.8rem; /* Ajustado */
+    margin-bottom: 3rem;
+    font-family: var(--font-signature);
+    color: var(--secondary-color); /* Roxo */
+    font-size: 2.2rem;
     line-height: 1.4;
+    text-shadow: 0 0 8px rgba(155, 89, 182, 0.3);
 }
 
 .letter-body h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    color: var(--primary-color);
-    margin-bottom: 1.5rem;
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--primary-color); /* Rosa */
+    margin-bottom: 1.8rem;
     text-align: center;
+    text-shadow: 0 0 5px rgba(255, 105, 180, 0.2);
 }
 
 .letter-body p {
-    margin-bottom: 1.5rem; /* Espaçamento entre parágrafos */
+    margin-bottom: 1.8rem;
     text-align: justify;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.05rem; /* Levemente menor para melhor leitura */
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    line-height: 1.8; /* Mais espaçamento entre linhas para leitura */
+    color: var(--text-dark);
 }
 
 .letter-body .signature {
     text-align: right;
-    margin-top: 3.5rem;
-    font-family: 'Dancing Script', cursive; /* Nova fonte */
-    font-size: 2rem; /* Mais destaque */
-    color: var(--primary-color);
+    margin-top: 4rem;
+    font-family: var(--font-signature);
+    font-size: 2.5rem;
+    color: var(--tertiary-color); /* Verde */
     font-weight: bold;
     line-height: 1.2;
+    text-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
 }
 
 .letter-body .ps {
     text-align: right;
     font-size: 0.95rem;
-    color: var(--text-color);
-    margin-top: 0.8rem;
+    color: var(--text-dark);
+    margin-top: 1rem;
     font-style: italic;
 }
 
 .letter-body .signature-end {
     text-align: right;
-    margin-top: 1.5rem;
-    font-size: 2.2rem; /* Aumentado */
-    font-family: 'Dancing Script', cursive; /* Nova fonte */
-    color: var(--primary-color);
+    margin-top: 1.8rem;
+    font-size: 2.8rem;
+    font-family: var(--font-signature);
+    color: var(--primary-color); /* Rosa */
     font-weight: bold;
     line-height: 1.2;
+    text-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
 }
 
-/* --- Responsividade --- */
+/* --- Responsividade Global e Fina --- */
 
-/* Telas menores que 768px (tablets e smartphones grandes) */
+/* Base para unidades relativas */
+@media (min-width: 1200px) {
+    html {
+        font-size: 17px; /* Aumenta um pouco para telas muito grandes */
+    }
+}
+
+/* Tablets e smartphones grandes (Landscape e Portrait) */
+@media (max-width: 992px) {
+    .main-header h1 {
+        font-size: 3.8rem;
+    }
+    .main-header .subtitle {
+        font-size: 1.4rem;
+    }
+    #envelope-container {
+        width: 380px;
+        height: 220px;
+    }
+    #open-envelope-btn {
+        font-size: 1.2rem;
+        padding: 0.9rem 2.2rem;
+    }
+    #letter-container {
+        max-width: 700px;
+        max-height: 90vh;
+        padding: 3rem 2.5rem;
+    }
+    .letter-header {
+        font-size: 2rem;
+    }
+    .letter-body h2 {
+        font-size: 1.6rem;
+    }
+    .letter-body p {
+        font-size: 1rem;
+    }
+    .letter-body .signature {
+        font-size: 2.2rem;
+    }
+    .letter-body .signature-end {
+        font-size: 2.5rem;
+    }
+}
+
+/* Smartphones (Portrait) */
 @media (max-width: 768px) {
-    body {
-        font-size: 1rem; /* 16px */
+    html {
+        font-size: 15px; /* Reduz a base para caber mais */
     }
-
     .loading-text {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
-
-    .header-animation h1 {
-        font-size: 2.8rem;
-        margin-bottom: 2rem;
+    .main-header h1 {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
     }
-
+    .main-header .subtitle {
+        font-size: 1.2rem;
+    }
+    #envelope-wrapper {
+        margin-bottom: 6rem;
+    }
     #envelope-container {
         width: 320px;
         height: 190px;
     }
-
     #open-envelope-btn {
-        padding: 0.8rem 1.8rem;
         font-size: 1.1rem;
+        padding: 0.8rem 2rem;
+        gap: 0.8rem;
         bottom: -5rem;
     }
-
     #open-envelope-btn img {
-        width: 1.3rem;
-        height: 1.3rem;
+        width: 1.4rem;
+        height: 1.4rem;
     }
-
     #letter-container {
-        padding: 2.5rem 1.8rem;
-        max-width: 95%;
-        max-height: 90vh; /* Ajuste para caber em telas menores */
+        padding: 2.5rem 1.5rem;
+        width: 95%; /* Ocupa mais espaço em mobile */
+        height: 90%; /* Usa mais altura em mobile */
+        max-height: 95vh; /* Garante que não estoure a tela */
     }
-
+    .letter-paper-content::-webkit-scrollbar {
+        width: 8px; /* Scrollbar mais fino */
+    }
     .letter-header {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         margin-bottom: 2rem;
     }
-
     .letter-body h2 {
         font-size: 1.4rem;
-        margin-bottom: 1.2rem;
+        margin-bottom: 1.5rem;
     }
-
     .letter-body p {
         font-size: 0.95rem;
-        margin-bottom: 1.2rem;
+        margin-bottom: 1.5rem;
     }
-
     .letter-body .signature {
-        font-size: 1.7rem;
-        margin-top: 3rem;
+        font-size: 2rem;
+        margin-top: 3.5rem;
     }
-
     .letter-body .ps {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
-
     .letter-body .signature-end {
-        font-size: 1.8rem;
-        margin-top: 1.2rem;
+        font-size: 2.2rem;
+        margin-top: 1.5rem;
     }
 }
 
-/* Telas menores que 480px (smartphones) */
+/* Smartphones muito pequenos (ex: iPhone SE) */
 @media (max-width: 480px) {
-    body {
-        font-size: 0.95rem; /* 15px */
+    html {
+        font-size: 14px; /* Base menor para tudo */
     }
-
     .loading-text {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         margin-top: 1.5rem;
     }
-
     .galaxy-container {
-        width: 200px;
-        height: 200px;
+        width: 250px;
+        height: 250px;
     }
-
-    .header-animation h1 {
-        font-size: 2.2rem;
-        margin-bottom: 1.5rem;
+    .main-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
     }
-
+    .main-header .subtitle {
+        font-size: 1rem;
+    }
     #envelope-container {
         width: 280px;
         height: 160px;
     }
-
     #open-envelope-btn {
-        padding: 0.7rem 1.5rem;
+        padding: 0.6rem 1.5rem;
         font-size: 1rem;
+        gap: 0.6rem;
         bottom: -4rem;
     }
-
     #open-envelope-btn img {
         width: 1.2rem;
         height: 1.2rem;
     }
-
     #letter-container {
         padding: 2rem 1rem;
     }
-
     .letter-header {
-        font-size: 1.3rem;
+        font-size: 1.6rem;
         margin-bottom: 1.5rem;
     }
-
     .letter-body h2 {
         font-size: 1.2rem;
         margin-bottom: 1rem;
     }
-
     .letter-body p {
         font-size: 0.9rem;
         margin-bottom: 1rem;
     }
-
     .letter-body .signature {
-        font-size: 1.5rem;
-        margin-top: 2.5rem;
+        font-size: 1.8rem;
+        margin-top: 3rem;
     }
-
     .letter-body .ps {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
-
     .letter-body .signature-end {
-        font-size: 1.6rem;
-        margin-top: 1rem;
+        font-size: 2rem;
+        margin-top: 1.2rem;
     }
-}
-
-/* Animações de entrada e saída */
-.fade-out-up {
-    animation: fadeOutUp 0.6s ease-out forwards;
-}
-
-@keyframes fadeOutUp {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(-30px); }
 }
