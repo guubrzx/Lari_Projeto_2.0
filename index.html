@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Minha Coisa Linda</title>
+    <title>Nosso Universo de Amor</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@300;400&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@300;400&family=Dancing+Script:wght@400;700&family=Raleway:wght@200;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="loading-screen">
         <div class="galaxy-container">
-            <img src="assets/galaxy.svg" alt="Galáxia em formação" class="galaxy-bg">
+            <img src="assets/galaxy.svg" alt="Galáxia pulsante" class="galaxy-bg">
             <div class="blackhole-center"></div>
             <div class="stars"></div>
         </div>
@@ -19,8 +19,9 @@
     </div>
 
     <div id="main-content" class="hidden">
-        <header class="header-animation">
-            <h1>Para Minha Coisa Linda</h1>
+        <header class="main-header">
+            <h1>Nosso Universo de Amor</h1>
+            <p class="subtitle">Uma mensagem que transcende o tempo e o espaço</p>
         </header>
 
         <div id="envelope-wrapper">
@@ -28,7 +29,7 @@
                 <div class="envelope closed">
                     <div class="flap"></div>
                     <div class="body"></div>
-                    <div class="shadow"></div>
+                    <div class="inner-shadow"></div>
                     <button id="open-envelope-btn" aria-label="Abrir Carta">
                         <img src="assets/heart-icon.svg" alt="Ícone de Coração"> Abrir Carta
                     </button>
@@ -37,7 +38,7 @@
         </div>
 
         <div id="letter-container" class="hidden">
-            <div class="letter-paper">
+            <canvas id="letter-canvas"></canvas> <div class="letter-paper-content">
                 <div class="letter-header">
                     <p>Com carinho, orgulho e esse sorriso bobo que você me faz ter só de pensar em ti…</p>
                 </div>
