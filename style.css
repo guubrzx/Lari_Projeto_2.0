@@ -4,9 +4,11 @@
     --secondary-color: #f7aef8; /* Lilás Claro */
     --text-color: #333;
     --bg-dark: #0a0a2a; /* Azul Escuro para o espaço */
-    --bg-light: #fdf5e6; /* Creme para o fundo da carta */
+    --bg-light: #fdf5e6; /* Creme suave para o fundo da carta */
     --envelope-color: #d3a7e6; /* Um roxo suave para o envelope */
     --envelope-shadow: #7e578c;
+    --border-radius-lg: 15px;
+    --border-radius-md: 10px;
 }
 
 /* Base */
@@ -14,14 +16,16 @@ body {
     margin: 0;
     font-family: 'Open Sans', sans-serif;
     color: var(--text-color);
-    background-color: var(--bg-dark); /* Fundo inicial escuro */
+    background-color: var(--bg-dark);
     overflow: hidden; /* Esconde barras de rolagem iniciais */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    font-size: 1.1em;
-    line-height: 1.6;
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .hidden {
@@ -43,12 +47,15 @@ body {
     z-index: 9999;
     color: white;
     font-family: 'Playfair Display', serif;
+    text-align: center;
 }
 
 .galaxy-container {
     position: relative;
-    width: 300px;
-    height: 300px;
+    width: 250px; /* Ajustado para responsividade */
+    height: 250px; /* Ajustado para responsividade */
+    max-width: 80vw; /* Máximo 80% da largura da viewport */
+    max-height: 80vw;
     overflow: hidden;
     border-radius: 50%;
     display: flex;
@@ -64,16 +71,17 @@ body {
     object-fit: cover;
     opacity: 0; /* Inicia invisível e é animado pelo JS */
     animation: rotateGalaxy 30s linear infinite;
+    filter: brightness(1.2); /* Mais brilho na galáxia */
 }
 
 .blackhole-center {
-    width: 80px;
-    height: 80px;
+    width: 60px; /* Ajustado */
+    height: 60px; /* Ajustado */
     background: radial-gradient(circle at center, #000 0%, #3a005c 70%, #6a008a 100%);
     border-radius: 50%;
-    box-shadow: 0 0 50px 20px rgba(100, 0, 150, 0.7);
+    box-shadow: 0 0 40px 15px rgba(100, 0, 150, 0.7);
     z-index: 2;
-    transform: scale(0); /* Inicia invisível e é animado pelo JS */
+    transform: scale(0);
 }
 
 .stars {
@@ -83,13 +91,13 @@ body {
     width: 100%;
     height: 100%;
     z-index: 1;
-    /* Estrelas serão criadas com JS */
 }
 
 .loading-text {
-    margin-top: 30px;
-    font-size: 1.5em;
-    opacity: 0; /* Inicia invisível e é animado pelo JS */
+    margin-top: 2rem;
+    font-size: 1.8rem;
+    opacity: 0;
+    text-shadow: 0 0 8px rgba(255,255,255,0.5);
 }
 
 @keyframes rotateGalaxy {
@@ -111,33 +119,45 @@ body {
     justify-content: center;
     width: 100%;
     max-width: 900px;
-    padding: 20px;
+    padding: 1.5rem; /* Ajustado com rem */
     box-sizing: border-box;
-    opacity: 0; /* Inicia invisível */
+    opacity: 0;
     transform: translateY(20px);
+    color: white; /* Cor do texto no tema escuro */
 }
 
 .header-animation h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 3em;
+    font-size: 3.5rem; /* Ajustado com rem */
     color: var(--primary-color);
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 3rem; /* Ajustado com rem */
     opacity: 0;
-    transform: translateY(-20px);
-    text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+    transform: translateY(-30px);
+    text-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+    letter-spacing: 0.05em; /* Pequeno espaçamento para melhor leitura */
+}
+
+/* Envelope Wrapper para posicionamento */
+#envelope-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3rem;
 }
 
 /* Envelope */
 #envelope-container {
     position: relative;
-    width: 350px;
-    height: 200px;
-    perspective: 1000px; /* Para o efeito 3D da aba */
-    margin-top: 50px;
+    width: 380px; /* Tamanho base maior */
+    height: 220px;
+    perspective: 1000px;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 10;
 }
 
 .envelope {
@@ -145,10 +165,10 @@ body {
     width: 100%;
     height: 100%;
     background-color: var(--envelope-color);
-    border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
     transform-style: preserve-3d;
-    transition: transform 0.5s ease-in-out; /* Para girar o envelope */
+    transition: transform 0.5s ease-in-out;
 }
 
 .envelope .body {
@@ -156,7 +176,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: var(--envelope-color);
-    border-radius: 10px;
+    border-radius: var(--border-radius-md);
     z-index: 1;
 }
 
@@ -165,24 +185,24 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 50%;
+    height: 55%; /* Mais da metade para melhor efeito */
     background-color: var(--envelope-color);
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
     transform-origin: top;
     transform: rotateX(0deg);
-    transition: transform 0.8s ease-in-out;
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bounce effect */
     z-index: 3;
     border-bottom: 2px solid var(--envelope-shadow);
 }
 
-.envelope .flap::before { /* Borda da aba */
+.envelope .flap::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
     background: linear-gradient(135deg, transparent 49%, var(--envelope-shadow) 50%, var(--envelope-shadow) 51%, transparent 52%);
     background-size: 100% 100%;
     background-position: center bottom;
@@ -193,12 +213,12 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    border-radius: 10px;
-    background: rgba(0,0,0,0.1);
-    transform: translateZ(-10px) rotateX(10deg);
-    filter: blur(10px);
+    border-radius: var(--border-radius-md);
+    background: rgba(0,0,0,0.15);
+    transform: translateZ(-15px) rotateX(15deg);
+    filter: blur(12px);
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.6s ease-in-out;
     z-index: 0;
 }
 
@@ -213,151 +233,289 @@ body {
 
 #open-envelope-btn {
     position: absolute;
-    bottom: -60px; /* Posição inicial abaixo do envelope */
+    bottom: -6rem; /* Ajustado com rem */
     left: 50%;
-    transform: translateX(-50%) scale(0); /* Começa invisível e pequeno */
-    padding: 15px 30px;
-    font-size: 1.2em;
+    transform: translateX(-50%) scale(0);
+    padding: 1rem 2rem; /* Ajustado com rem */
+    font-size: 1.3rem; /* Ajustado com rem */
     font-family: 'Playfair Display', serif;
     background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.5);
     transition: all 0.3s ease-in-out;
     display: flex;
     align-items: center;
-    gap: 10px;
-    z-index: 4; /* Acima do envelope */
+    gap: 0.8rem;
+    z-index: 11;
 }
 
 #open-envelope-btn img {
-    width: 24px;
-    height: 24px;
-    filter: brightness(0) invert(1); /* Torna o SVG branco */
+    width: 1.5rem;
+    height: 1.5rem;
+    filter: brightness(0) invert(1);
 }
 
 #open-envelope-btn:hover {
     background-color: #e652a2;
-    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.6);
-    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.8);
+    transform: translateX(-50%) scale(1.08);
+}
+
+#open-envelope-btn:active {
+    transform: translateX(-50%) scale(0.98);
 }
 
 /* Carta Aberta */
 #letter-container {
     position: absolute;
-    top: 50%; /* Será ajustado com JS para sair do envelope */
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.1); /* Começa pequena e centralizada */
-    width: 80%;
-    max-width: 700px;
+    transform: translate(-50%, -50%) scale(0.1);
+    width: 90%; /* Ajustado para responsividade */
+    max-width: 760px; /* Aumentado para melhor leitura */
     background-color: var(--bg-light);
-    border-radius: 15px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-    padding: 40px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    padding: 3rem 2.5rem; /* Ajustado com rem */
     box-sizing: border-box;
-    z-index: 2; /* Atrás do envelope inicialmente */
+    z-index: 100; /* Acima de tudo para a carta aberta */
     opacity: 0;
     transform-origin: center top;
+    color: var(--text-color); /* Garante que o texto da carta seja escuro */
+    will-change: transform, opacity; /* Otimização de performance */
 }
 
 .letter-paper {
     height: 100%;
     width: 100%;
-    overflow-y: auto; /* Para scrollar o texto se for muito longo */
-    max-height: calc(100vh - 100px); /* Ajusta para caber na tela */
-    padding-right: 15px; /* Para não cortar o scrollbar */
+    overflow-y: auto;
+    max-height: calc(100vh - 100px);
+    padding-right: 1rem; /* Espaço para o scrollbar */
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--primary-color) #f1f1f1; /* Firefox */
+}
+
+/* Custom scrollbar para Webkit browsers (Chrome, Safari) */
+.letter-paper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.letter-paper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.letter-paper::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+.letter-paper::-webkit-scrollbar-thumb:hover {
+    background: #e652a2;
 }
 
 .letter-header {
     text-align: center;
-    margin-bottom: 30px;
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
+    margin-bottom: 2.5rem;
+    font-family: 'Dancing Script', cursive; /* Nova fonte */
+    font-style: normal;
     color: var(--primary-color);
-    font-size: 1.2em;
+    font-size: 1.8rem; /* Ajustado */
+    line-height: 1.4;
+}
+
+.letter-body h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
 }
 
 .letter-body p {
-    margin-bottom: 1.2em;
+    margin-bottom: 1.5rem; /* Espaçamento entre parágrafos */
     text-align: justify;
     font-family: 'Open Sans', sans-serif;
+    font-size: 1.05rem; /* Levemente menor para melhor leitura */
 }
 
 .letter-body .signature {
     text-align: right;
-    margin-top: 40px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3em;
+    margin-top: 3.5rem;
+    font-family: 'Dancing Script', cursive; /* Nova fonte */
+    font-size: 2rem; /* Mais destaque */
     color: var(--primary-color);
     font-weight: bold;
+    line-height: 1.2;
 }
 
 .letter-body .ps {
     text-align: right;
-    font-size: 0.9em;
+    font-size: 0.95rem;
     color: var(--text-color);
-    margin-top: 10px;
+    margin-top: 0.8rem;
+    font-style: italic;
 }
 
 .letter-body .signature-end {
     text-align: right;
-    margin-top: 20px;
-    font-size: 1.5em;
-    font-family: 'Playfair Display', serif;
+    margin-top: 1.5rem;
+    font-size: 2.2rem; /* Aumentado */
+    font-family: 'Dancing Script', cursive; /* Nova fonte */
     color: var(--primary-color);
     font-weight: bold;
+    line-height: 1.2;
 }
 
-/* Responsividade */
+/* --- Responsividade --- */
+
+/* Telas menores que 768px (tablets e smartphones grandes) */
 @media (max-width: 768px) {
+    body {
+        font-size: 1rem; /* 16px */
+    }
+
+    .loading-text {
+        font-size: 1.5rem;
+    }
+
     .header-animation h1 {
-        font-size: 2.2em;
+        font-size: 2.8rem;
+        margin-bottom: 2rem;
     }
 
     #envelope-container {
-        width: 300px;
-        height: 170px;
+        width: 320px;
+        height: 190px;
     }
 
     #open-envelope-btn {
-        padding: 12px 25px;
-        font-size: 1em;
+        padding: 0.8rem 1.8rem;
+        font-size: 1.1rem;
+        bottom: -5rem;
+    }
+
+    #open-envelope-btn img {
+        width: 1.3rem;
+        height: 1.3rem;
     }
 
     #letter-container {
-        width: 95%;
-        padding: 20px;
+        padding: 2.5rem 1.8rem;
+        max-width: 95%;
+        max-height: 90vh; /* Ajuste para caber em telas menores */
     }
 
     .letter-header {
-        font-size: 1em;
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .letter-body h2 {
+        font-size: 1.4rem;
+        margin-bottom: 1.2rem;
     }
 
     .letter-body p {
-        font-size: 1em;
+        font-size: 0.95rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .letter-body .signature {
+        font-size: 1.7rem;
+        margin-top: 3rem;
+    }
+
+    .letter-body .ps {
+        font-size: 0.9rem;
+    }
+
+    .letter-body .signature-end {
+        font-size: 1.8rem;
+        margin-top: 1.2rem;
     }
 }
 
+/* Telas menores que 480px (smartphones) */
 @media (max-width: 480px) {
+    body {
+        font-size: 0.95rem; /* 15px */
+    }
+
+    .loading-text {
+        font-size: 1.2rem;
+        margin-top: 1.5rem;
+    }
+
+    .galaxy-container {
+        width: 200px;
+        height: 200px;
+    }
+
     .header-animation h1 {
-        font-size: 1.8em;
-        margin-bottom: 30px;
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
     }
 
     #envelope-container {
-        width: 250px;
-        height: 150px;
+        width: 280px;
+        height: 160px;
     }
 
     #open-envelope-btn {
-        padding: 10px 20px;
-        font-size: 0.9em;
-        bottom: -50px;
+        padding: 0.7rem 1.5rem;
+        font-size: 1rem;
+        bottom: -4rem;
+    }
+
+    #open-envelope-btn img {
+        width: 1.2rem;
+        height: 1.2rem;
     }
 
     #letter-container {
-        padding: 15px;
+        padding: 2rem 1rem;
     }
+
+    .letter-header {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .letter-body h2 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .letter-body p {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .letter-body .signature {
+        font-size: 1.5rem;
+        margin-top: 2.5rem;
+    }
+
+    .letter-body .ps {
+        font-size: 0.85rem;
+    }
+
+    .letter-body .signature-end {
+        font-size: 1.6rem;
+        margin-top: 1rem;
+    }
+}
+
+/* Animações de entrada e saída */
+.fade-out-up {
+    animation: fadeOutUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeOutUp {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-30px); }
 }
