@@ -34,7 +34,7 @@ body {
     font-family: var(--font-body);
     color: var(--text-light); /* Cor do texto padrão para o fundo escuro */
     background: linear-gradient(135deg, var(--bg-dark) 0%, #1a0f4a 100%); /* Gradiente sutil */
-    overflow: hidden;
+    overflow: hidden; /* Prevent scrolling on main body */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -70,9 +70,9 @@ body {
 
 .galaxy-container {
     position: relative;
-    width: 300px;
+    width: 300px; /* Base size */
     height: 300px;
-    max-width: 90vw;
+    max-width: 90vw; /* Responsive scaling */
     max-height: 90vw;
     overflow: hidden;
     border-radius: 50%;
@@ -80,6 +80,7 @@ body {
     justify-content: center;
     align-items: center;
     box-shadow: 0 0 80px 30px rgba(155, 89, 182, 0.5); /* Sombra roxa vibrante */
+    animation: pulse 4s infinite ease-in-out; /* Pulsing effect */
 }
 
 .galaxy-bg {
@@ -87,8 +88,8 @@ body {
     width: 180%; /* Aumentado para preencher mais o espaço */
     height: 180%;
     object-fit: cover;
-    opacity: 0;
-    animation: rotateGalaxy 40s linear infinite; /* Mais lento para ser majestoso */
+    opacity: 0; /* Animated by JS */
+    animation: rotateGalaxy 60s linear infinite; /* Mais lento para ser majestoso, increased duration */
     filter: brightness(1.2) contrast(1.1); /* Mais brilho e contraste */
 }
 
@@ -99,7 +100,7 @@ body {
     border-radius: 50%;
     box-shadow: 0 0 60px 25px rgba(100, 0, 150, 0.8);
     z-index: 2;
-    transform: scale(0);
+    transform: scale(0); /* Animated by JS */
 }
 
 .stars {
@@ -114,7 +115,7 @@ body {
 .loading-text {
     margin-top: 2.5rem;
     font-size: 2.2rem;
-    opacity: 0;
+    opacity: 0; /* Animated by JS */
     text-shadow: 0 0 12px rgba(255,255,255,0.7);
     letter-spacing: 0.08em;
 }
@@ -138,11 +139,11 @@ body {
     align-items: center;
     justify-content: flex-start; /* Alinhamento inicial */
     width: 100%;
-    max-width: 1100px; /* Maior largura para telas grandes */
+    max-width: 1200px; /* Increased max-width for larger screens */
     padding: 2rem 1.5rem;
     box-sizing: border-box;
-    opacity: 0;
-    transform: translateY(30px);
+    opacity: 0; /* Animated by JS */
+    transform: translateY(30px); /* Animated by JS */
     color: var(--text-light); /* Cor do texto no tema escuro */
     min-height: 100vh; /* Para que o conteúdo não se "perca" em telas pequenas */
     position: relative; /* Para posicionar a carta absolutamente */
@@ -162,7 +163,7 @@ body {
     letter-spacing: 0.08em;
     margin-bottom: 0.5rem;
     opacity: 0; /* Animado pelo JS */
-    transform: translateY(-50px);
+    transform: translateY(-50px); /* Animado pelo JS */
 }
 
 .main-header .subtitle {
@@ -172,7 +173,7 @@ body {
     text-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
     letter-spacing: 0.05em;
     opacity: 0; /* Animado pelo JS */
-    transform: translateY(30px);
+    transform: translateY(30px); /* Animado pelo JS */
 }
 
 /* --- Envelope Wrapper: A Caixa de Segredos --- */
@@ -292,7 +293,7 @@ body {
     position: absolute;
     bottom: -6.5rem; /* Mais para baixo */
     left: 50%;
-    transform: translateX(-50%) scale(0);
+    transform: translateX(-50%) scale(0); /* Animated by JS */
     padding: 1rem 2.5rem;
     font-size: 1.4rem;
     font-family: var(--font-subtitle);
@@ -338,7 +339,7 @@ body {
     position: fixed; /* Fixa a carta na tela para evitar rolagem do body */
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.1);
+    transform: translate(-50%, -50%) scale(0.1); /* Animated by JS */
     width: 95%; /* Ocupa quase toda a largura para mobile */
     max-width: 800px; /* Maior largura para desktop */
     height: 90%; /* Ocupa quase toda a altura para mobile */
@@ -349,7 +350,7 @@ body {
     padding: 3.5rem 3rem; /* Padding generoso */
     box-sizing: border-box;
     z-index: 200; /* Acima de tudo */
-    opacity: 0;
+    opacity: 0; /* Animated by JS */
     transform-origin: center center; /* Muda o ponto de origem para o centro */
     display: flex; /* Para empilhar o canvas e o conteúdo */
     flex-direction: column;
@@ -460,6 +461,20 @@ body {
 @media (min-width: 1200px) {
     html {
         font-size: 17px; /* Aumenta um pouco para telas muito grandes */
+    }
+    .main-header h1 {
+        font-size: 5.5rem; /* Larger for very big screens */
+    }
+    .main-header .subtitle {
+        font-size: 1.8rem;
+    }
+    #envelope-container {
+        width: 480px; /* Larger envelope */
+        height: 280px;
+    }
+    #letter-container {
+        max-width: 900px; /* Wider letter */
+        padding: 4rem;
     }
 }
 
