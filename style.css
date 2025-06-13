@@ -27,26 +27,26 @@
 }
 
 html {
-    font-size: 16px; /* Base para REM */
+    font-size: 16px; /* Base para REM em desktops grandes */
 }
 
 body {
     font-family: var(--font-body);
-    color: var(--text-light); /* Cor do texto padrão para o fundo escuro */
-    background: linear-gradient(135deg, var(--bg-dark) 0%, #1a0f4a 100%); /* Gradiente sutil */
-    overflow: hidden; /* Prevent scrolling on main body */
+    color: var(--text-light);
+    background: linear-gradient(135deg, var(--bg-dark) 0%, #1a0f4a 100%);
+    overflow: hidden; /* Controlado por JS para scroll */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    font-size: 1.125rem; /* 18px */
+    font-size: 1.125rem; /* Padrão de 18px */
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 .hidden {
-    display: none;
+    display: none !important; /* Use !important para garantir que override outros displays */
 }
 
 /* --- Loading Screen: O Espetáculo Galáctico --- */
@@ -54,8 +54,8 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background-color: var(--bg-dark);
     display: flex;
     flex-direction: column;
@@ -65,42 +65,44 @@ body {
     color: var(--text-light);
     font-family: var(--font-heading);
     text-align: center;
-    overflow: hidden; /* Garantir que as estrelas não vazem */
+    overflow: hidden;
+    padding: 1rem; /* Pequeno padding para telas muito pequenas */
 }
 
 .galaxy-container {
     position: relative;
-    width: 300px; /* Base size */
-    height: 300px;
-    max-width: 90vw; /* Responsive scaling */
-    max-height: 90vw;
+    width: 280px; /* Tamanho base menor para mobile */
+    height: 280px;
+    max-width: 80vw; /* Ajuste para viewport width */
+    max-height: 80vw;
     overflow: hidden;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 0 80px 30px rgba(155, 89, 182, 0.5); /* Sombra roxa vibrante */
-    animation: pulse 4s infinite ease-in-out; /* Pulsing effect */
+    box-shadow: 0 0 60px 20px rgba(155, 89, 182, 0.4);
+    animation: pulse 4s infinite ease-in-out;
+    aspect-ratio: 1 / 1; /* Garante que é sempre um círculo */
 }
 
 .galaxy-bg {
     position: absolute;
-    width: 180%; /* Aumentado para preencher mais o espaço */
+    width: 180%;
     height: 180%;
     object-fit: cover;
-    opacity: 0; /* Animated by JS */
-    animation: rotateGalaxy 60s linear infinite; /* Mais lento para ser majestoso, increased duration */
-    filter: brightness(1.2) contrast(1.1); /* Mais brilho e contraste */
+    opacity: 0;
+    animation: rotateGalaxy 60s linear infinite;
+    filter: brightness(1.2) contrast(1.1);
 }
 
 .blackhole-center {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     background: radial-gradient(circle at center, #000 0%, #3a005c 60%, #6a008a 100%);
     border-radius: 50%;
-    box-shadow: 0 0 60px 25px rgba(100, 0, 150, 0.8);
+    box-shadow: 0 0 50px 20px rgba(100, 0, 150, 0.7);
     z-index: 2;
-    transform: scale(0); /* Animated by JS */
+    transform: scale(0);
 }
 
 .stars {
@@ -113,10 +115,10 @@ body {
 }
 
 .loading-text {
-    margin-top: 2.5rem;
-    font-size: 2.2rem;
-    opacity: 0; /* Animated by JS */
-    text-shadow: 0 0 12px rgba(255,255,255,0.7);
+    margin-top: 2rem;
+    font-size: 1.8rem; /* Tamanho base para mobile */
+    opacity: 0;
+    text-shadow: 0 0 10px rgba(255,255,255,0.6);
     letter-spacing: 0.08em;
 }
 
@@ -126,78 +128,82 @@ body {
 }
 
 @keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 0 80px 30px rgba(155, 89, 182, 0.5); }
-    50% { transform: scale(1.03); box-shadow: 0 0 100px 40px rgba(155, 89, 182, 0.7); }
-    100% { transform: scale(1); box-shadow: 0 0 80px 30px rgba(155, 89, 182, 0.5); }
+    0% { transform: scale(1); box-shadow: 0 0 60px 20px rgba(155, 89, 182, 0.4); }
+    50% { transform: scale(1.03); box-shadow: 0 0 80px 30px rgba(155, 89, 182, 0.6); }
+    100% { transform: scale(1); box-shadow: 0 0 60px 20px rgba(155, 89, 182, 0.4); }
 }
 
 
-/* --- Main Content: A Palco da Emoção --- */
+/* --- Main Content: O Palco da Emoção --- */
 #main-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Alinhamento inicial */
-    width: 100%;
-    max-width: 1200px; /* Increased max-width for larger screens */
-    padding: 2rem 1.5rem;
+    justify-content: flex-start;
+    width: 100vw; /* Garante 100% da largura do viewport */
+    max-width: 1400px; /* Limite superior para telas muito grandes */
+    padding: 2rem 1rem; /* Padding responsivo */
     box-sizing: border-box;
-    opacity: 0; /* Animated by JS */
-    transform: translateY(30px); /* Animated by JS */
-    color: var(--text-light); /* Cor do texto no tema escuro */
-    min-height: 100vh; /* Para que o conteúdo não se "perca" em telas pequenas */
-    position: relative; /* Para posicionar a carta absolutamente */
+    opacity: 0;
+    transform: translateY(30px);
+    color: var(--text-light);
+    min-height: 100vh;
+    position: relative;
 }
 
 .main-header {
     text-align: center;
-    margin-bottom: 4rem;
-    padding-top: 2rem; /* Espaçamento do topo */
+    margin-bottom: 4rem; /* Margem padrão */
+    padding-top: 1.5rem; /* Padding para o topo */
+    width: 100%; /* Garante que o header ocupe 100% para alinhamento */
 }
 
 .main-header h1 {
     font-family: var(--font-heading);
-    font-size: 4.5rem;
+    font-size: 3.2rem; /* Tamanho base para mobile */
     color: var(--primary-color);
-    text-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
-    letter-spacing: 0.08em;
+    text-shadow: 0 0 15px rgba(255, 105, 180, 0.7);
+    letter-spacing: 0.06em;
     margin-bottom: 0.5rem;
-    opacity: 0; /* Animado pelo JS */
-    transform: translateY(-50px); /* Animado pelo JS */
+    opacity: 0;
+    transform: translateY(-50px);
+    line-height: 1.2; /* Ajusta o espaçamento entre linhas */
 }
 
 .main-header .subtitle {
     font-family: var(--font-subtitle);
-    font-size: 1.6rem;
-    color: var(--secondary-color); /* Roxo */
-    text-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
-    letter-spacing: 0.05em;
-    opacity: 0; /* Animado pelo JS */
-    transform: translateY(30px); /* Animado pelo JS */
+    font-size: 1.3rem; /* Tamanho base para mobile */
+    color: var(--secondary-color);
+    text-shadow: 0 0 8px rgba(155, 89, 182, 0.4);
+    letter-spacing: 0.04em;
+    opacity: 0;
+    transform: translateY(30px);
+    padding: 0 1rem; /* Padding para evitar que o texto encoste nas bordas em mobile */
 }
 
 /* --- Envelope Wrapper: A Caixa de Segredos --- */
 #envelope-wrapper {
     position: relative;
-    width: 100%;
+    width: 100%; /* Garante que o wrapper ocupe a largura total */
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-grow: 1; /* Para empurrar para baixo e centralizar */
-    margin-bottom: 8rem; /* Espaço para o botão */
+    flex-grow: 1; /* Faz com que o envelope empurre o conteúdo para baixo */
+    margin-bottom: 7rem; /* Espaço para o botão */
     z-index: 10;
 }
 
 #envelope-container {
     position: relative;
-    width: 420px; /* Tamanho base maior para impacto */
-    height: 250px;
-    max-width: 90vw; /* Responsivo */
-    max-height: 55vw; /* Manter proporção em telas pequenas */
-    perspective: 1500px; /* Mais perspectiva para 3D */
+    width: 300px; /* Tamanho base menor para mobile */
+    height: 180px;
+    max-width: 85vw; /* Ajuste para viewport width */
+    max-height: 50vw; /* Manter proporção */
+    perspective: 1500px;
     display: flex;
     justify-content: center;
     align-items: center;
+    aspect-ratio: 1.66 / 1; /* Proporção do envelope */
 }
 
 .envelope {
@@ -206,10 +212,10 @@ body {
     height: 100%;
     background-color: var(--envelope-color);
     border-radius: var(--border-radius-md);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.35);
     transform-style: preserve-3d;
     transition: transform 0.5s ease-in-out;
-    border: 2px solid var(--envelope-shadow); /* Borda sutil */
+    border: 2px solid var(--envelope-shadow);
 }
 
 .envelope .body {
@@ -231,7 +237,7 @@ body {
     border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
     transform-origin: top;
     transform: rotateX(0deg);
-    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bounce effect */
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     z-index: 3;
     border-bottom: 3px solid var(--envelope-shadow);
 }
@@ -250,29 +256,16 @@ body {
     z-index: -1;
 }
 
-.envelope .shadow {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: var(--border-radius-md);
-    background: rgba(0,0,0,0.25);
-    transform: translateZ(-20px) rotateX(15deg);
-    filter: blur(15px);
-    opacity: 0;
-    transition: opacity 0.6s ease-in-out;
-    z-index: 0;
-}
-
 .envelope .inner-shadow {
     position: absolute;
     width: calc(100% - 10px);
     height: calc(100% - 10px);
     border-radius: var(--border-radius-md);
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.25);
     top: 5px;
     left: 5px;
     z-index: 2;
-    opacity: 0; /* Animado quando abre */
+    opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
 
@@ -281,32 +274,28 @@ body {
     transform: rotateX(180deg);
 }
 
-.envelope.open .shadow {
-    opacity: 1;
-}
-
 .envelope.open .inner-shadow {
     opacity: 1;
 }
 
 #open-envelope-btn {
     position: absolute;
-    bottom: -6.5rem; /* Mais para baixo */
+    bottom: -6rem; /* Ajustado para mobile */
     left: 50%;
-    transform: translateX(-50%) scale(0); /* Animated by JS */
-    padding: 1rem 2.5rem;
-    font-size: 1.4rem;
+    transform: translateX(-50%) scale(0);
+    padding: 0.9rem 2rem; /* Padding responsivo */
+    font-size: 1.1rem; /* Tamanho base para mobile */
     font-family: var(--font-subtitle);
     background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.6);
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.5);
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.8rem; /* Espaçamento responsivo */
     z-index: 11;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -314,47 +303,47 @@ body {
 }
 
 #open-envelope-btn img {
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 1.4rem;
+    height: 1.4rem;
     filter: brightness(0) invert(1);
     transition: transform 0.3s ease-in-out;
 }
 
 #open-envelope-btn:hover {
     background-color: #e652a2;
-    box-shadow: 0 12px 30px rgba(255, 105, 180, 0.9);
-    transform: translateX(-50%) scale(1.1);
+    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.8);
+    transform: translateX(-50%) scale(1.05); /* Escala menor no hover para mobile */
 }
 
 #open-envelope-btn:hover img {
-    transform: scale(1.2);
+    transform: scale(1.1); /* Escala menor no hover */
 }
 
 #open-envelope-btn:active {
-    transform: translateX(-50%) scale(0.95);
+    transform: translateX(-50%) scale(0.98);
 }
 
 /* --- Carta Aberta: O Toque Mágico --- */
 #letter-container {
-    position: fixed; /* Fixa a carta na tela para evitar rolagem do body */
+    position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.1); /* Animated by JS */
-    width: 95%; /* Ocupa quase toda a largura para mobile */
-    max-width: 800px; /* Maior largura para desktop */
-    height: 90%; /* Ocupa quase toda a altura para mobile */
-    max-height: 90vh; /* Limita a altura para desktop */
+    transform: translate(-50%, -50%) scale(0.1);
+    width: 96vw; /* Ocupa quase toda a largura do viewport */
+    max-width: 900px; /* Limite superior para desktop */
+    height: 96vh; /* Ocupa quase toda a altura do viewport */
+    max-height: 900px; /* Limite superior para desktop */
     background-color: var(--bg-light);
     border-radius: var(--border-radius-lg);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
-    padding: 3.5rem 3rem; /* Padding generoso */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    padding: 2rem 1.5rem; /* Padding responsivo */
     box-sizing: border-box;
-    z-index: 200; /* Acima de tudo */
-    opacity: 0; /* Animated by JS */
-    transform-origin: center center; /* Muda o ponto de origem para o centro */
-    display: flex; /* Para empilhar o canvas e o conteúdo */
+    z-index: 200;
+    opacity: 0;
+    transform-origin: center center;
+    display: flex;
     flex-direction: column;
-    overflow: hidden; /* Para o canvas não vazar */
+    overflow: hidden; /* Para o canvas não vazar e para o conteúdo rolar */
 }
 
 #letter-canvas {
@@ -363,34 +352,34 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; /* Fica atrás do conteúdo da carta */
+    z-index: -1;
     border-radius: var(--border-radius-lg);
-    opacity: 0.7; /* Suaviza as partículas */
+    opacity: 0.6; /* Suaviza as partículas */
 }
 
 .letter-paper-content {
     position: relative;
     height: 100%;
     width: 100%;
-    overflow-y: auto; /* Apenas o conteúdo rola */
-    padding-right: 1.2rem; /* Espaço para o scrollbar */
-    color: var(--text-dark); /* Texto da carta escuro */
+    overflow-y: auto;
+    padding-right: 1rem; /* Espaço para o scrollbar */
+    color: var(--text-dark);
 }
 
 /* Custom scrollbar para Webkit browsers (Chrome, Safari, Edge) */
 .letter-paper-content::-webkit-scrollbar {
-    width: 10px;
+    width: 8px; /* Mais fino para mobile */
 }
 
 .letter-paper-content::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #f8f8f8;
     border-radius: 10px;
 }
 
 .letter-paper-content::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, var(--secondary-color), var(--tertiary-color)); /* Gradiente na barra de rolagem */
+    background: linear-gradient(to bottom, var(--secondary-color), var(--tertiary-color));
     border-radius: 10px;
-    border: 1px solid var(--bg-light); /* Borda para contraste */
+    border: 1px solid var(--bg-light);
 }
 
 .letter-paper-content::-webkit-scrollbar-thumb:hover {
@@ -399,247 +388,248 @@ body {
 
 .letter-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem; /* Margem responsiva */
     font-family: var(--font-signature);
-    color: var(--secondary-color); /* Roxo */
-    font-size: 2.2rem;
+    color: var(--secondary-color);
+    font-size: 1.8rem; /* Tamanho base para mobile */
     line-height: 1.4;
-    text-shadow: 0 0 8px rgba(155, 89, 182, 0.3);
+    text-shadow: 0 0 6px rgba(155, 89, 182, 0.2);
 }
 
 .letter-body h2 {
     font-family: var(--font-heading);
-    font-size: 1.8rem;
-    color: var(--primary-color); /* Rosa */
-    margin-bottom: 1.8rem;
+    font-size: 1.6rem; /* Tamanho base para mobile */
+    color: var(--primary-color);
+    margin-bottom: 1.5rem; /* Margem responsiva */
     text-align: center;
-    text-shadow: 0 0 5px rgba(255, 105, 180, 0.2);
+    text-shadow: 0 0 4px rgba(255, 105, 180, 0.15);
 }
 
 .letter-body p {
-    margin-bottom: 1.8rem;
+    margin-bottom: 1.5rem; /* Margem responsiva */
     text-align: justify;
     font-family: var(--font-body);
-    font-size: 1.05rem;
-    line-height: 1.8; /* Mais espaçamento entre linhas para leitura */
+    font-size: 0.95rem; /* Tamanho base para mobile */
+    line-height: 1.7;
     color: var(--text-dark);
 }
 
 .letter-body .signature {
     text-align: right;
-    margin-top: 4rem;
+    margin-top: 3.5rem; /* Margem responsiva */
     font-family: var(--font-signature);
-    font-size: 2.5rem;
-    color: var(--tertiary-color); /* Verde */
+    font-size: 2.2rem; /* Tamanho base para mobile */
+    color: var(--tertiary-color);
     font-weight: bold;
     line-height: 1.2;
-    text-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
+    text-shadow: 0 0 8px rgba(46, 204, 113, 0.3);
 }
 
 .letter-body .ps {
     text-align: right;
-    font-size: 0.95rem;
+    font-size: 0.85rem; /* Tamanho base para mobile */
     color: var(--text-dark);
-    margin-top: 1rem;
+    margin-top: 0.8rem; /* Margem responsiva */
     font-style: italic;
 }
 
 .letter-body .signature-end {
     text-align: right;
-    margin-top: 1.8rem;
-    font-size: 2.8rem;
+    margin-top: 1.5rem; /* Margem responsiva */
+    font-size: 2.4rem; /* Tamanho base para mobile */
     font-family: var(--font-signature);
-    color: var(--primary-color); /* Rosa */
+    color: var(--primary-color);
     font-weight: bold;
     line-height: 1.2;
-    text-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
+    text-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
 }
 
-/* --- Responsividade Global e Fina --- */
+/* --- Media Queries: Mobile-First aprimorado --- */
 
-/* Base para unidades relativas */
-@media (min-width: 1200px) {
-    html {
-        font-size: 17px; /* Aumenta um pouco para telas muito grandes */
+/* Ajustes para telas maiores que mobile (ex: 576px - small tablets, large phones landscape) */
+@media (min-width: 576px) {
+    .loading-text {
+        font-size: 2rem;
     }
-    .main-header h1 {
-        font-size: 5.5rem; /* Larger for very big screens */
-    }
-    .main-header .subtitle {
-        font-size: 1.8rem;
-    }
-    #envelope-container {
-        width: 480px; /* Larger envelope */
-        height: 280px;
-    }
-    #letter-container {
-        max-width: 900px; /* Wider letter */
-        padding: 4rem;
-    }
-}
-
-/* Tablets e smartphones grandes (Landscape e Portrait) */
-@media (max-width: 992px) {
     .main-header h1 {
         font-size: 3.8rem;
     }
     .main-header .subtitle {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
     }
     #envelope-container {
-        width: 380px;
-        height: 220px;
+        width: 350px;
+        height: 210px;
     }
     #open-envelope-btn {
+        padding: 1rem 2.2rem;
         font-size: 1.2rem;
-        padding: 0.9rem 2.2rem;
+        gap: 1rem;
+    }
+    #open-envelope-btn img {
+        width: 1.5rem;
+        height: 1.5rem;
     }
     #letter-container {
-        max-width: 700px;
-        max-height: 90vh;
-        padding: 3rem 2.5rem;
+        padding: 2.5rem 2rem;
     }
     .letter-header {
         font-size: 2rem;
     }
     .letter-body h2 {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
     }
     .letter-body p {
         font-size: 1rem;
     }
     .letter-body .signature {
-        font-size: 2.2rem;
-    }
-    .letter-body .signature-end {
         font-size: 2.5rem;
     }
-}
-
-/* Smartphones (Portrait) */
-@media (max-width: 768px) {
-    html {
-        font-size: 15px; /* Reduz a base para caber mais */
-    }
-    .loading-text {
-        font-size: 1.8rem;
-    }
-    .main-header h1 {
-        font-size: 3rem;
-        margin-bottom: 1.5rem;
-    }
-    .main-header .subtitle {
-        font-size: 1.2rem;
-    }
-    #envelope-wrapper {
-        margin-bottom: 6rem;
-    }
-    #envelope-container {
-        width: 320px;
-        height: 190px;
-    }
-    #open-envelope-btn {
-        font-size: 1.1rem;
-        padding: 0.8rem 2rem;
-        gap: 0.8rem;
-        bottom: -5rem;
-    }
-    #open-envelope-btn img {
-        width: 1.4rem;
-        height: 1.4rem;
-    }
-    #letter-container {
-        padding: 2.5rem 1.5rem;
-        width: 95%; /* Ocupa mais espaço em mobile */
-        height: 90%; /* Usa mais altura em mobile */
-        max-height: 95vh; /* Garante que não estoure a tela */
-    }
-    .letter-paper-content::-webkit-scrollbar {
-        width: 8px; /* Scrollbar mais fino */
-    }
-    .letter-header {
-        font-size: 1.8rem;
-        margin-bottom: 2rem;
-    }
-    .letter-body h2 {
-        font-size: 1.4rem;
-        margin-bottom: 1.5rem;
-    }
-    .letter-body p {
-        font-size: 0.95rem;
-        margin-bottom: 1.5rem;
-    }
-    .letter-body .signature {
-        font-size: 2rem;
-        margin-top: 3.5rem;
-    }
-    .letter-body .ps {
-        font-size: 0.85rem;
-    }
     .letter-body .signature-end {
-        font-size: 2.2rem;
-        margin-top: 1.5rem;
+        font-size: 2.8rem;
     }
 }
 
-/* Smartphones muito pequenos (ex: iPhone SE) */
-@media (max-width: 480px) {
+/* Ajustes para Tablets (Landscape) e Pequenos Laptops (768px) */
+@media (min-width: 768px) {
     html {
-        font-size: 14px; /* Base menor para tudo */
+        font-size: 16px; /* Volta para a base de 16px */
     }
     .loading-text {
-        font-size: 1.5rem;
-        margin-top: 1.5rem;
+        font-size: 2.5rem;
     }
     .galaxy-container {
-        width: 250px;
-        height: 250px;
+        width: 350px;
+        height: 350px;
     }
     .main-header h1 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
+        font-size: 4.5rem;
     }
     .main-header .subtitle {
-        font-size: 1rem;
+        font-size: 1.7rem;
     }
     #envelope-container {
-        width: 280px;
-        height: 160px;
+        width: 420px;
+        height: 250px;
     }
     #open-envelope-btn {
-        padding: 0.6rem 1.5rem;
-        font-size: 1rem;
-        gap: 0.6rem;
-        bottom: -4rem;
-    }
-    #open-envelope-btn img {
-        width: 1.2rem;
-        height: 1.2rem;
+        padding: 1.1rem 2.5rem;
+        font-size: 1.3rem;
     }
     #letter-container {
-        padding: 2rem 1rem;
+        padding: 3rem 2.5rem;
+        max-width: 800px;
+        max-height: 80vh;
+    }
+    .letter-paper-content::-webkit-scrollbar {
+        width: 10px;
     }
     .letter-header {
-        font-size: 1.6rem;
-        margin-bottom: 1.5rem;
+        font-size: 2.2rem;
     }
     .letter-body h2 {
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
+        font-size: 2rem;
     }
     .letter-body p {
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
+        font-size: 1.05rem;
     }
     .letter-body .signature {
-        font-size: 1.8rem;
-        margin-top: 3rem;
-    }
-    .letter-body .ps {
-        font-size: 0.8rem;
+        font-size: 2.8rem;
     }
     .letter-body .signature-end {
-        font-size: 2rem;
-        margin-top: 1.2rem;
+        font-size: 3.2rem;
+    }
+}
+
+/* Ajustes para Desktops (992px) */
+@media (min-width: 992px) {
+    .loading-text {
+        font-size: 2.8rem;
+    }
+    .galaxy-container {
+        width: 400px;
+        height: 400px;
+    }
+    .main-header h1 {
+        font-size: 5.5rem;
+    }
+    .main-header .subtitle {
+        font-size: 1.9rem;
+    }
+    #envelope-container {
+        width: 480px;
+        height: 280px;
+    }
+    #open-envelope-btn {
+        padding: 1.2rem 2.8rem;
+        font-size: 1.4rem;
+    }
+    #letter-container {
+        padding: 3.5rem 3rem;
+        max-width: 900px;
+        max-height: 85vh;
+    }
+    .letter-header {
+        font-size: 2.5rem;
+    }
+    .letter-body h2 {
+        font-size: 2.2rem;
+    }
+    .letter-body p {
+        font-size: 1.1rem;
+    }
+    .letter-body .signature {
+        font-size: 3rem;
+    }
+    .letter-body .signature-end {
+        font-size: 3.5rem;
+    }
+}
+
+/* Ajustes para Desktops muito grandes (1200px) */
+@media (min-width: 1200px) {
+    html {
+        font-size: 17px; /* Aumenta um pouco a base para telas muito grandes */
+    }
+    .loading-text {
+        font-size: 3.2rem;
+    }
+    .galaxy-container {
+        width: 450px;
+        height: 450px;
+    }
+    .main-header h1 {
+        font-size: 6.5rem;
+    }
+    .main-header .subtitle {
+        font-size: 2.1rem;
+    }
+    #envelope-container {
+        width: 550px;
+        height: 320px;
+    }
+    #open-envelope-btn {
+        padding: 1.3rem 3rem;
+        font-size: 1.5rem;
+    }
+    #letter-container {
+        padding: 4rem 3.5rem;
+        max-width: 1000px;
+        max-height: 90vh;
+    }
+    .letter-header {
+        font-size: 2.8rem;
+    }
+    .letter-body h2 {
+        font-size: 2.4rem;
+    }
+    .letter-body p {
+        font-size: 1.15rem;
+    }
+    .letter-body .signature {
+        font-size: 3.5rem;
+    }
+    .letter-body .signature-end {
+        font-size: 4rem;
     }
 }
