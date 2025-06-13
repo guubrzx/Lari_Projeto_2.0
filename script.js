@@ -2,9 +2,32 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Elementos da tela de carregamento ---
     const loadingScreen = document.getElementById('loading-screen');
     const starCanvas = document.getElementById('star-canvas');
-    const starCtx = starCanvas.getContext('2d');
     const loadingTitle = document.querySelector('.loading-title');
     const loadingSubtitle = document.querySelector('.loading-subtitle');
+
+    // Verifica se os elementos essenciais da tela de carregamento existem
+    // Isso é CRÍTICO para evitar erros se algum elemento não for encontrado
+    if (!loadingScreen || !starCanvas || !loadingTitle || !loadingSubtitle) {
+        console.error("Erro: Elementos essenciais da tela de carregamento não encontrados. Verifique o HTML.");
+        // Se a tela de carregamento não puder ser animada, mostre o conteúdo principal
+        if (mainContent) {
+            loadingScreen.classList.add('hidden');
+            mainContent.classList.remove('hidden');
+            // Tente animar o conteúdo principal se ele existir
+            if (mainHeaderH1 && mainHeaderSubtitle && envelope && openEnvelopeBtn) {
+                 gsap.timeline({ defaults: { ease: "power2.out" } })
+                    .to(mainContent, { opacity: 1, y: 0, duration: 1.2 })
+                    .from(mainHeaderH1, { opacity: 0, y: -70, duration: 1.5, ease: "elastic.out(1, 0.4)" }, "<0.3")
+                    .from(mainHeaderSubtitle, { opacity: 0, y: 30, duration: 1, ease: "power1.out" }, "<0.2")
+                    .from(envelope, { scale: 0.4, opacity: 0, y: 180, rotation: 45, duration: 1.6, ease: "back.out(1.2)" }, "-=0.7")
+                    .fromTo(openEnvelopeBtn, { scale: 0, opacity: 0, y: 90, rotation: -20 }, { scale: 1, opacity: 1, y: 0, rotation: 0, duration: 1, ease: "back.out(1.2)" }, "-=0.5");
+            }
+        }
+        return; // Sai da função se elementos essenciais não existirem
+    }
+
+    const starCtx = starCanvas.getContext('2d');
+    let starAnimationId;
 
     // --- Elementos do conteúdo principal ---
     const mainContent = document.getElementById('main-content');
@@ -21,11 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Elementos da carta ---
     const letterContainer = document.getElementById('letter-container');
     const letterParticlesCanvas = document.getElementById('letter-particles-canvas');
-    const letterParticlesCtx = letterParticlesCanvas.getContext('2d');
     const letterBodyElements = document.querySelectorAll('#letter-container .letter-body p, #letter-container .letter-body h2, #letter-container .letter-header p, #letter-container .letter-body .signature, #letter-container .letter-body .ps, #letter-container .letter-body .signature-end');
 
-    let starAnimationId;
     let letterParticleAnimationId;
+    let letterParticlesCtx; // Definido aqui, mas inicializado apenas quando a carta é aberta
 
     // --- Partículas para a Tela de Carregamento (Star Canvas) ---
     let stars = [];
@@ -41,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.speedY = (Math.random() - 0.5) * 0.5;
             this.color = starColors[Math.floor(Math.random() * starColors.length)];
             this.opacity = Math.random() * 0.8 + 0.2;
+            this.initialOpacity = this.opacity; // Guarda a opacidade inicial para resetar
             this.life = Math.random() * 100 + 50;
             this.maxLife = this.life;
         }
@@ -49,19 +72,25 @@ document.addEventListener('DOMContentLoaded', () => {
             this.x += this.speedX;
             this.y += this.speedY;
 
-            if (this.x < 0 || this.x > starCanvas.width) this.x = Math.random() * starCanvas.width;
-            if (this.y < 0 || this.y > starCanvas.height) this.y = Math.random() * starCanvas.height;
+            // Loop das estrelas para simular movimento contínuo
+            // Se a estrela sair da tela, ela reaparece do outro lado
+            if (this.x < 0) this.x = starCanvas.width;
+            if (this.x > starCanvas.width) this.x = 0;
+            if (this.y < 0) this.y = starCanvas.height;
+            if (this.y > starCanvas.height) this.y = 0;
 
-            this.opacity = this.opacity * (this.life / this.maxLife); // Ajuste aqui para não usar initialOpacity após a primeira execução
+            // Fade out e renascimento
+            this.opacity = this.initialOpacity * (this.life / this.maxLife);
             this.life -= 0.2;
 
             if (this.life < 0) {
                 this.x = Math.random() * starCanvas.width;
                 this.y = Math.random() * starCanvas.height;
                 this.life = this.maxLife;
-                this.opacity = Math.random() * 0.8 + 0.2;
+                this.opacity = this.initialOpacity; // Reseta para a opacidade inicial
             }
 
+            // Pequenas variações para movimento orgânico
             this.speedX += (Math.random() * 0.02) - 0.01;
             this.speedY += (Math.random() * 0.02) - 0.01;
             this.speedX = Math.min(Math.max(this.speedX, -0.6), 0.6);
@@ -74,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             starCtx.beginPath();
             starCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             starCtx.fill();
-            starCtx.globalAlpha = 1;
+            starCtx.globalAlpha = 1; // Reset alpha
         }
     }
 
@@ -116,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadingScreen.classList.add('hidden');
                     mainContent.classList.remove('hidden');
                     animateMainContent();
-                    cancelAnimationFrame(starAnimationId);
+                    cancelAnimationFrame(starAnimationId); // Para a animação do canvas de carregamento
                 }
             });
         }
@@ -142,12 +171,29 @@ document.addEventListener('DOMContentLoaded', () => {
         delay: 1.2
     }, "+=0.8");
 
-    // O restante do script (main content, envelope, letter animations) permanece INALTERADO.
-    // ... (restante do seu script.js aqui)
+    // --- Animação do Conteúdo Principal (Entrada Elegante) ---
+    function animateMainContent() {
+        gsap.timeline({ defaults: { ease: "power2.out" } })
+            .to(mainContent, { opacity: 1, y: 0, duration: 1.2 })
+            .from(mainHeaderH1, { opacity: 0, y: -70, duration: 1.5, ease: "elastic.out(1, 0.4)" }, "<0.3")
+            .from(mainHeaderSubtitle, { opacity: 0, y: 30, duration: 1, ease: "power1.out" }, "<0.2")
+            .from(envelope, {
+                scale: 0.4,
+                opacity: 0,
+                y: 180,
+                rotation: 45,
+                duration: 1.6,
+                ease: "back.out(1.2)"
+            }, "-=0.7")
+            .fromTo(openEnvelopeBtn,
+                { scale: 0, opacity: 0, y: 90, rotation: -20 },
+                { scale: 1, opacity: 1, y: 0, rotation: 0, duration: 1, ease: "back.out(1.2)" }, "-=0.5"
+            );
+    }
 
     // --- Partículas para o Fundo da Carta (Letter Particles Canvas) ---
     let letterParticles = [];
-    const numLetterParticles = 600; // Mais partículas para a carta
+    const numLetterParticles = 600;
     const letterParticleColors = ['#f7aef8', '#ff69b4', '#9b59b6', '#ecf0f1', '#e0b8ff', '#ffd1dc'];
 
     class LetterParticle {
@@ -190,6 +236,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function animateLetterParticles() {
+        if (!letterParticlesCtx) { // Garante que o contexto foi inicializado
+            letterParticlesCtx = letterParticlesCanvas.getContext('2d');
+        }
         letterParticlesCtx.clearRect(0, 0, letterParticlesCanvas.width, letterParticlesCanvas.height);
         letterParticlesCtx.globalCompositeOperation = 'lighter';
         for (let i = 0; i < letterParticles.length; i++) {
@@ -201,9 +250,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resizeLetterCanvas() {
-        letterParticlesCanvas.width = letterContainer.clientWidth;
-        letterParticlesCanvas.height = letterContainer.clientHeight;
-        initLetterParticles();
+        if (letterParticlesCanvas) { // Verifica se o canvas existe antes de tentar acessá-lo
+            letterParticlesCanvas.width = letterContainer.clientWidth;
+            letterParticlesCanvas.height = letterContainer.clientHeight;
+            initLetterParticles();
+        }
     }
 
     // --- Animação de Abrir Carta (A Grande Revelação) ---
