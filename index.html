@@ -3,40 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nosso Universo de Amor</title>
+    <title>Aurora do Destino</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:300;400;600&family=Dancing+Script:400;700&family=Raleway:200;400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
 </head>
 <body>
 
     <div id="loading-screen">
-        <canvas id="galaxy-canvas"></canvas> <div class="loading-content">
-            <div class="blackhole-center"></div> <p class="loading-text">Carregando nosso universo...</p>
+        <canvas id="star-canvas"></canvas> <div class="loading-content">
+            <h1 class="loading-title">Revelando o Destino</h1>
+            <p class="loading-subtitle">Carregando nosso universo...</p>
         </div>
     </div>
 
     <div id="main-content" class="hidden">
         <header class="main-header">
-            <h1>Nosso Universo de Amor</h1>
+            <h1>Sussurros Cósmicos</h1>
             <p class="subtitle">Uma mensagem que transcende o tempo e o espaço</p>
         </header>
 
         <div id="envelope-wrapper">
             <div id="envelope-container">
-                <div class="envelope closed">
+                <div class="envelope">
                     <div class="flap"></div>
                     <div class="body"></div>
                     <div class="inner-shadow"></div>
-                    <button id="open-envelope-btn" aria-label="Abrir Carta">
-                        <img src="assets/heart-icon.svg" alt="Ícone de Coração"> Abrir Carta
-                    </button>
                 </div>
+                <button id="open-envelope-btn" aria-label="Abrir Carta">
+                    <span class="btn-icon">💌</span> Abrir Carta
+                </button>
             </div>
         </div>
 
         <div id="letter-container" class="hidden">
-            <canvas id="letter-canvas"></canvas>
-            <div class="letter-paper-content">
+            <canvas id="letter-particles-canvas"></canvas> <div class="letter-paper-content">
                 <div class="letter-header">
                     <p>Com carinho, orgulho e esse sorriso bobo que você me faz ter só de pensar em ti…</p>
                 </div>
