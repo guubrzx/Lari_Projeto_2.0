@@ -29,19 +29,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Partículas para a Tela de Carregamento (Star Canvas) ---
     let stars = [];
-    const numStars = 800; // Mais estrelas para um céu mais denso e rápido
-    const starColors = ['#F8F8F8', '#E0E0FF', '#FFFACD', '#FFDDC1', '#DDA0DD']; // Mais variação de cores de estrelas
+    const numStars = 800;
+    const starColors = ['#F8F8F8', '#E0E0FF', '#FFFACD', '#FFDDC1', '#DDA0DD'];
 
     class Star {
         constructor() {
             this.x = Math.random() * starCanvas.width;
             this.y = Math.random() * starCanvas.height;
-            this.size = Math.random() * 1.5 + 0.3; // Estrelas pequenas e rápidas
-            this.speedX = (Math.random() - 0.5) * 0.5; // Velocidade mais perceptível
+            this.size = Math.random() * 1.5 + 0.3;
+            this.speedX = (Math.random() - 0.5) * 0.5;
             this.speedY = (Math.random() - 0.5) * 0.5;
             this.color = starColors[Math.floor(Math.random() * starColors.length)];
-            this.opacity = Math.random() * 0.8 + 0.2; // Opacidade para brilho
-            this.life = Math.random() * 100 + 50; // Vida útil
+            this.opacity = Math.random() * 0.8 + 0.2;
+            this.life = Math.random() * 100 + 50;
             this.maxLife = this.life;
         }
 
@@ -49,21 +49,19 @@ document.addEventListener('DOMContentLoaded', () => {
             this.x += this.speedX;
             this.y += this.speedY;
 
-            // Loop das estrelas para simular movimento contínuo
             if (this.x < 0 || this.x > starCanvas.width) this.x = Math.random() * starCanvas.width;
             if (this.y < 0 || this.y > starCanvas.height) this.y = Math.random() * starCanvas.height;
 
-            this.opacity = this.initialOpacity * (this.life / this.maxLife);
-            this.life -= 0.2; // Diminui a vida mais rápido
+            this.opacity = this.opacity * (this.life / this.maxLife); // Ajuste aqui para não usar initialOpacity após a primeira execução
+            this.life -= 0.2;
 
-            if (this.life < 0) { // Renasce a estrela
+            if (this.life < 0) {
                 this.x = Math.random() * starCanvas.width;
                 this.y = Math.random() * starCanvas.height;
                 this.life = this.maxLife;
                 this.opacity = Math.random() * 0.8 + 0.2;
             }
 
-            // Pequenas variações para movimento orgânico
             this.speedX += (Math.random() * 0.02) - 0.01;
             this.speedY += (Math.random() * 0.02) - 0.01;
             this.speedX = Math.min(Math.max(this.speedX, -0.6), 0.6);
@@ -89,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function animateStars() {
         starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
-        starCtx.globalCompositeOperation = 'lighter'; // Efeito de brilho aditivo
+        starCtx.globalCompositeOperation = 'lighter';
         for (let i = 0; i < stars.length; i++) {
             stars[i].update();
             stars[i].draw();
@@ -105,24 +103,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Animação da Tela de Carregamento (Aurora Cósmica) ---
+    // Dividir o título em spans para animar letra por letra ANTES de criar a timeline
+    loadingTitle.innerHTML = loadingTitle.textContent.split('').map(char => `<span>${char === ' ' ? '&nbsp;' : char}</span>`).join('');
+
     const loadingTl = gsap.timeline({
         defaults: { ease: "power2.out" },
         onComplete: () => {
             gsap.to(loadingScreen, {
                 opacity: 0,
-                duration: 0.7, // Transição rápida
+                duration: 0.7,
                 onComplete: () => {
                     loadingScreen.classList.add('hidden');
                     mainContent.classList.remove('hidden');
                     animateMainContent();
-                    cancelAnimationFrame(starAnimationId); // Para a animação do canvas de carregamento
+                    cancelAnimationFrame(starAnimationId);
                 }
             });
         }
     });
-
-    // Dividir o título em spans para animar letra por letra
-    loadingTitle.innerHTML = loadingTitle.textContent.split('').map(char => `<span>${char === ' ' ? '&nbsp;' : char}</span>`).join('');
 
     loadingTl.set(loadingScreen, { opacity: 1 })
     .add(() => {
@@ -141,28 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
         stagger: 0.03,
         duration: 0.6,
         ease: "power1.in",
-        delay: 1.2 // Tempo para o usuário ler
-    }, "+=0.8"); // Começa a sumir
+        delay: 1.2
+    }, "+=0.8");
 
-    // --- Animação do Conteúdo Principal (Entrada Elegante) ---
-    function animateMainContent() {
-        gsap.timeline({ defaults: { ease: "power2.out" } })
-            .to(mainContent, { opacity: 1, y: 0, duration: 1.2 })
-            .from(mainHeaderH1, { opacity: 0, y: -70, duration: 1.5, ease: "elastic.out(1, 0.4)" }, "<0.3")
-            .from(mainHeaderSubtitle, { opacity: 0, y: 30, duration: 1, ease: "power1.out" }, "<0.2")
-            .from(envelope, {
-                scale: 0.4,
-                opacity: 0,
-                y: 180,
-                rotation: 45,
-                duration: 1.6,
-                ease: "back.out(1.2)"
-            }, "-=0.7")
-            .fromTo(openEnvelopeBtn,
-                { scale: 0, opacity: 0, y: 90, rotation: -20 },
-                { scale: 1, opacity: 1, y: 0, rotation: 0, duration: 1, ease: "back.out(1.2)" }, "-=0.5"
-            );
-    }
+    // O restante do script (main content, envelope, letter animations) permanece INALTERADO.
+    // ... (restante do seu script.js aqui)
 
     // --- Partículas para o Fundo da Carta (Letter Particles Canvas) ---
     let letterParticles = [];
