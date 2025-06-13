@@ -27,45 +27,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('letter-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    const numParticles = 300; // Dobrado para mais densidade e fluidez
-    // Cores mais vivas para as partículas e adicionado um espectro maior
-    const particleColors = ['#f7aef8', '#ff69b4', '#2ecc71', '#9b59b6', '#e74c3c', '#3498db', '#f1c40f', '#8e44ad', '#1abc9c', '#d35400'];
+    const numParticles = 400; // Aumentado para uma experiência mais imersiva
+    const particleColors = ['#f7aef8', '#ff69b4', '#2ecc71', '#9b59b6', '#e74c3c', '#3498db', '#f1c40f', '#8e44ad', '#1abc9c', '#d35400', '#f39c12', '#9b59b6', '#c0392b', '#16a085']; // Mais cores
 
     function resizeCanvas() {
         canvas.width = letterContainer.clientWidth;
         canvas.height = letterContainer.clientHeight;
-        // Recria partículas com base no novo tamanho para evitar que fiquem fora da tela ou esparsas
-        initParticles();
+        if (letterContainer.classList.contains('hidden')) {
+            // Only re-initialize if the letter is hidden, otherwise animateParticles will handle it
+            initParticles();
+        }
     }
 
     class Particle {
         constructor() {
             this.x = Math.random() * canvas.width;
             this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 3 + 1; // Tamanho um pouco maior
-            this.speedX = (Math.random() * 1) - 0.5; // Velocidade um pouco maior
-            this.speedY = (Math.random() * 1) - 0.5;
+            this.size = Math.random() * 2.5 + 0.8; // Tamanho refinado
+            this.speedX = (Math.random() * 1.2) - 0.6; // Velocidade ajustada
+            this.speedY = (Math.random() * 1.2) - 0.6;
             this.color = particleColors[Math.floor(Math.random() * particleColors.length)];
-            this.opacity = Math.random() * 0.7 + 0.3; // Opacidade um pouco maior
+            this.opacity = Math.random() * 0.6 + 0.2; // Opacidade mais variada
             this.initialOpacity = this.opacity;
-            this.direction = Math.random() < 0.5 ? 1 : -1; // Direção para movimento de onda
         }
         update() {
             this.x += this.speedX;
             this.y += this.speedY;
 
-            // Faz as partículas "ricochetear" nas bordas
-            if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-            if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            // Continua o movimento nas bordas, dando uma sensação de "loop" infinito
+            if (this.x < 0) this.x = canvas.width;
+            if (this.x > canvas.width) this.x = 0;
+            if (this.y < 0) this.y = canvas.height;
+            if (this.y > canvas.height) this.y = 0;
 
-            // Pequena variação aleatória para movimento mais orgânico
-            this.speedX += (Math.random() * 0.2) - 0.1;
-            this.speedY += (Math.random() * 0.2) - 0.1;
-            this.speedX = Math.min(Math.max(this.speedX, -0.8), 0.8); // Limita a velocidade
-            this.speedY = Math.min(Math.max(this.speedY, -0.8), 0.8);
+            this.speedX += (Math.random() * 0.1) - 0.05; // Pequenas variações para movimento orgânico
+            this.speedY += (Math.random() * 0.1) - 0.05;
+            this.speedX = Math.min(Math.max(this.speedX, -0.7), 0.7);
+            this.speedY = Math.min(Math.max(this.speedY, -0.7), 0.7);
 
-            // Efeito de pulsação de opacidade para as partículas
-            this.opacity = this.initialOpacity * (0.8 + Math.sin(Date.now() * 0.002 + this.x * 0.01) * 0.2);
+            this.opacity = this.initialOpacity * (0.7 + Math.sin(Date.now() * 0.0015 + this.x * 0.005) * 0.3); // Pulsação mais suave
         }
         draw() {
             ctx.fillStyle = this.color;
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
-            ctx.globalAlpha = 1;
+            ctx.globalAlpha = 1; // Reseta para não afetar outros desenhos
         }
     }
 
@@ -84,13 +84,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    let animationFrameId; // Para controlar a animação de partículas
     function animateParticles() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
             particles[i].draw();
         }
-        requestAnimationFrame(animateParticles);
+        animationFrameId = requestAnimationFrame(animateParticles);
     }
 
     // --- Animação da Tela de Carregamento (Galaxy Entrance) ---
@@ -98,89 +99,94 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < count; i++) {
             let star = document.createElement('div');
             star.classList.add('star');
-            const size = Math.random() * 3 + 0.5; // 0.5 to 3.5px
+            const size = Math.random() * 2.5 + 0.5; // Tamanho ajustado
             star.style.width = `${size}px`;
             star.style.height = `${size}px`;
-            star.style.backgroundColor = `rgba(255, 255, 255, ${Math.random() * 0.8 + 0.2})`;
+            star.style.backgroundColor = `rgba(255, 255, 255, ${Math.random() * 0.7 + 0.3})`;
             star.style.position = 'absolute';
             star.style.left = `${Math.random() * 100}%`;
             star.style.top = `${Math.random() * 100}%`;
             star.style.borderRadius = '50%';
-            star.style.boxShadow = `0 0 ${Math.random() * 8 + 4}px rgba(255, 255, 255, 0.7)`; // Mais brilho
+            star.style.boxShadow = `0 0 ${Math.random() * 6 + 3}px rgba(255, 255, 255, 0.6)`;
             starsContainer.appendChild(star);
 
             gsap.to(star, {
-                duration: Math.random() * 8 + 5, // Durações mais longas
+                duration: Math.random() * 7 + 4,
                 opacity: 0.1,
-                scale: 0.6,
+                scale: 0.5,
                 repeat: -1,
                 yoyo: true,
                 ease: "power1.inOut",
-                delay: Math.random() * 4 // Atrasos variados
+                delay: Math.random() * 3
             });
         }
     }
 
-    // Timeline principal da tela de carregamento
     const loadingTl = gsap.timeline({
-        defaults: { ease: "power3.inOut" }, // Easing mais suave e dramático
+        defaults: { ease: "power3.inOut" },
         onComplete: () => {
-            loadingScreen.style.display = 'none';
-            mainContent.classList.remove('hidden');
-            animateMainContent();
+            gsap.to(loadingScreen, {
+                opacity: 0,
+                duration: 1,
+                onComplete: () => {
+                    loadingScreen.classList.add('hidden'); // Usa a classe hidden
+                    mainContent.classList.remove('hidden');
+                    animateMainContent();
+                }
+            });
         }
     });
 
     loadingTl.to(galaxyBg, {
         opacity: 1,
-        scale: 1.5, // Mais zoom
-        duration: 3.5,
-        filter: "brightness(2) contrast(1.5)", // Brilho intenso
-        rotation: 720, // Mais rotação ao aparecer
+        scale: 1.5,
+        duration: 3,
+        filter: "brightness(2) contrast(1.5)",
+        rotation: 720,
         ease: "power2.out"
     })
     .to(blackholeCenter, {
         scale: 1,
-        duration: 2.5,
-        ease: "elastic.out(1, 0.7)", // Efeito elástico forte
+        duration: 2,
+        ease: "elastic.out(1, 0.7)",
         yoyo: true,
-        repeat: 1 // Pulsa uma vez antes de sumir
-    }, "-=1.8") // Começa antes da galáxia terminar
+        repeat: 1
+    }, "-=1.5")
     .to(loadingText, {
         opacity: 1,
-        y: -40, // Mais movimento
-        duration: 2,
-        letterSpacing: "0.2em", // Mais espaçamento
-        textShadow: "0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,105,180,0.8)", // Sombra forte e colorida
-        ease: "back.out(1.7)"
-    }, "-=1.2")
+        y: -30,
+        duration: 1.8,
+        letterSpacing: "0.15em",
+        textShadow: "0 0 15px rgba(255,255,255,0.9), 0 0 30px rgba(255,105,180,0.7)",
+        ease: "back.out(1.5)"
+    }, "-=1.0")
     .to([galaxyBg, blackholeCenter, loadingText, starsContainer], {
         opacity: 0,
-        scale: 0.5, // Desaparece encolhendo dramaticamente
-        duration: 2.5, // Duração da saída
+        scale: 0.6,
+        duration: 2,
         ease: "power3.in",
-        stagger: 0.15 // Stagger para cada elemento da galáxia
-    }, "+=2.5"); // Espera um pouco mais para a transição final
+        stagger: 0.1
+    }, "+=2");
 
-    createGalaxyStars(400); // Mais estrelas para um cosmos mais denso
+    createGalaxyStars(500); // Mais estrelas para um céu mais denso
 
     // --- Animação do Conteúdo Principal (Fade-in e Apresentação) ---
     function animateMainContent() {
         gsap.timeline({ defaults: { ease: "power3.out" } })
-            .to(mainContent, { opacity: 1, y: 0, duration: 2.5 })
-            .from(mainHeaderH1, { opacity: 0, y: -120, duration: 2.5, ease: "elastic.out(1, 0.6)" }, "<0.7") // Atrasa um pouco
-            .from(mainHeaderSubtitle, { opacity: 0, y: 60, duration: 1.8, ease: "power2.out" }, "<0.5") // Atrasa um pouco
+            .to(mainContent, { opacity: 1, y: 0, duration: 2 })
+            .from(mainHeaderH1, { opacity: 0, y: -100, duration: 2, ease: "elastic.out(1, 0.5)" }, "<0.6")
+            .from(mainHeaderSubtitle, { opacity: 0, y: 50, duration: 1.5, ease: "power2.out" }, "<0.4")
             .from(envelope, {
-                scale: 0.1, // Começa bem pequeno
+                scale: 0.2,
                 opacity: 0,
-                y: 300,
-                rotation: 120, // Mais rotação inicial
-                duration: 2.8, // Duração mais longa
-                ease: "elastic.out(1, 0.4)" // Efeito elástico para o envelope
-            }, "-=1.5") // Sobrepõe com o subtítulo
+                y: 250,
+                rotation: 90,
+                duration: 2.2,
+                ease: "elastic.out(1, 0.3)"
+            }, "-=1.2")
             .fromTo(openEnvelopeBtn,
-                { scale: 0, opacity: 0, y: 150, rotation: -60 }, // Inicia com rotação
-                { scale: 1, opacity: 1, y: 0, rotation: 0, duration: 1.8, ease: "back.out(1.7)" }, "-=1" // Efeito back-out para o botão
+                { scale: 0, opacity: 0, y: 120, rotation: -45 },
+                { scale: 1, opacity: 1, y: 0, rotation: 0, duration: 1.5, ease: "back.out(1.6)" }, "-=0.8"
             );
     }
 
@@ -190,36 +196,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
         openingTl.to(openEnvelopeBtn, {
             opacity: 0,
-            y: 80,
-            scale: 0.7,
-            duration: 0.8,
+            y: 70,
+            scale: 0.8,
+            duration: 0.6,
             ease: "power1.in"
         })
         .to(envelopeFlap, {
             rotationX: 180,
-            duration: 2, // Mais tempo para a aba abrir majestosamente
-            ease: "elastic.out(1, 0.7)" // Efeito elástico forte na aba
-        }, "-=0.5")
+            duration: 1.8,
+            ease: "elastic.out(1, 0.6)"
+        }, "-=0.4")
         .to(envelopeInnerShadow, {
             opacity: 1,
-            duration: 1.5
-        }, "-=1.8") // Sombra interna aparece mais cedo
+            duration: 1.2
+        }, "-=1.5")
         .to(envelope, {
-            y: -200, // Envelope sobe mais
-            x: 70, // Move lateralmente
-            scale: 0.5, // Diminui mais
-            rotation: 30, // Rotação final do envelope
-            opacity: 0, // Desaparece no final
-            duration: 1.5,
+            y: -180,
+            x: 60,
+            scale: 0.6,
+            rotation: 25,
+            opacity: 0,
+            duration: 1.2,
             ease: "power2.out"
-        }, "-=1.2") // Começa a sumir um pouco antes da carta aparecer
+        }, "-=1.0")
         .set(letterContainer, {
-            display: 'flex',
+            display: 'flex', // Muda de hidden para flex
             zIndex: 200,
-            pointerEvents: 'none' // Inicialmente inabilitado para cliques durante a animação
+            pointerEvents: 'none'
         })
         .fromTo(letterContainer,
-            { opacity: 0, y: "150vh", scale: 0.05, rotateX: 90, rotationY: -45, filter: "blur(20px)" }, // Começa bem de baixo, rotacionada em 3D, com blur
+            { opacity: 0, y: "120vh", scale: 0.1, rotateX: 70, rotationY: -30, filter: "blur(15px)" },
             {
                 opacity: 1,
                 y: "50%",
@@ -227,41 +233,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 rotateX: 0,
                 rotationY: 0,
                 filter: "blur(0px)",
-                duration: 2.8, // Duração da animação da carta
-                ease: "elastic.out(1, 0.5)", // Efeito elástico poderoso para a carta
+                duration: 2.5,
+                ease: "elastic.out(1, 0.4)",
                 onComplete: () => {
-                    letterContainer.style.pointerEvents = 'auto'; // Habilita cliques após a animação
-                    // Inicia o fundo animado e a animação do texto
-                    resizeCanvas();
-                    initParticles();
-                    animateParticles();
-                    animateLetterText(); // Chama a função para animar o texto
+                    letterContainer.style.pointerEvents = 'auto';
+                    resizeCanvas(); // Garante que o canvas tem o tamanho correto
+                    initParticles(); // Inicializa partículas após a carta estar no lugar
+                    if (!animationFrameId) { // Evita múltiplos loops de animação
+                        animateParticles();
+                    }
+                    animateLetterText();
                 }
-            }, "-=2") // Carta aparece sobrepondo a saída do envelope
+            }, "-=1.8")
     });
 
     // --- Animação do Texto da Carta (O Revelar da Mensagem) ---
     function animateLetterText() {
         gsap.from(letterBodyElements, {
             opacity: 0,
-            y: 50,
-            stagger: 0.04, // Stagger um pouco mais visível
-            duration: 1,
+            y: 40,
+            stagger: 0.03, // Stagger ajustado
+            duration: 0.9,
             ease: "power2.out",
-            delay: 0.8 // Pequeno atraso após a carta se estabilizar
+            delay: 0.7 // Pequeno atraso
         });
     }
 
     // --- Resizing e Otimização ---
     window.addEventListener('resize', () => {
         if (!letterContainer.classList.contains('hidden')) {
-            resizeCanvas();
-            // Re-initialize particles if needed, already handled in resizeCanvas
+            resizeCanvas(); // Apenas redimensiona o canvas
         }
     });
 
-    // Initialize particles for canvas even if not immediately visible
-    // This ensures they are ready when the letter opens.
-    // However, they will be re-initialized on resize and when letter opens to match actual dimensions.
-    // initParticles(); // Called only when letter becomes visible now for performance.
+    // Clean up animation frame when the page is unloaded (useful for single-page applications)
+    window.addEventListener('beforeunload', () => {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+    });
+
+    // Initial setup for the main content to be hidden
+    mainContent.classList.add('hidden');
 });
