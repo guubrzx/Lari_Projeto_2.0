@@ -1,31 +1,31 @@
 /* --- Variáveis de Cores e Fontes --- */
 :root {
-    --primary-color: #ff69b4; /* Rosa Quente */
-    --secondary-color: #9b59b6; /* Roxo vibrante */
-    --tertiary-color: #2ecc71; /* Verde esmeralda */
-    --text-dark: #2c3e50; /* Azul escuro quase preto */
-    --text-light: #ecf0f1; /* Branco suave */
-    --bg-dark: #050014; /* Fundo do espaço ainda mais profundo */
-    --bg-gradient-start: #0a012e;
-    --bg-gradient-end: #020008;
-    --envelope-color: #9b59b6; /* Roxo do envelope */
-    --envelope-shadow: #5a366e; /* Sombra mais escura para o envelope */
-    --card-bg: #fdfdfd; /* Fundo da carta mais claro */
-    --card-shadow-color: rgba(0, 0, 0, 0.4);
+    --primary-color: #A064FF; /* Roxo Lavanda Suave */
+    --secondary-color: #FF7BBA; /* Rosa Quente e Vibrante */
+    --tertiary-color: #92DDc8; /* Turquesa Pastel */
+    --text-dark: #333333; /* Cinza Escuro para texto principal */
+    --text-light: #F8F8F8; /* Quase branco */
+    --bg-main: #1A1A2E; /* Fundo Escuro Profundo */
+    --bg-gradient-start: #0F0F1A;
+    --bg-gradient-end: #0A0A10;
+    --envelope-color: #A064FF; /* Roxo Lavanda para o envelope */
+    --envelope-shadow: #6E44A0; /* Sombra mais escura para o envelope */
+    --card-bg: #FFFFFF; /* Fundo da carta branco puro */
+    --card-shadow-color: rgba(0, 0, 0, 0.3);
 
     /* Fontes */
     --font-heading: 'Playfair Display', serif;
-    --font-body: 'Open Sans', sans-serif;
+    --font-body: 'Montserrat', sans-serif;
     --font-signature: 'Dancing Script', cursive;
-    --font-subtitle: 'Raleway', sans-serif;
+    --font-subtitle: 'Montserrat', sans-serif;
 
     /* Spacing & Sizes */
-    --padding-sm: clamp(0.8rem, 2vw, 1.2rem);
-    --padding-md: clamp(1.5rem, 4vw, 2.5rem);
-    --padding-lg: clamp(2.5rem, 6vw, 4rem);
+    --padding-sm: 1rem;
+    --padding-md: 2rem;
+    --padding-lg: 3rem;
     --radius-sm: 0.5rem;
     --radius-md: 1.2rem;
-    --radius-lg: 2rem;
+    --radius-lg: 1.8rem;
 }
 
 /* --- Base & Reset --- */
@@ -37,7 +37,7 @@
 }
 
 html {
-    font-size: 16px; /* Base para REM */
+    font-size: 16px;
     scroll-behavior: smooth;
 }
 
@@ -45,12 +45,12 @@ body {
     font-family: var(--font-body);
     color: var(--text-light);
     background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-    overflow: hidden;
+    overflow: hidden; /* Mantém o scroll em hidden */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); /* Tamanho fluido */
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -62,36 +62,34 @@ body {
     opacity: 0 !important;
 }
 
-/* --- Loading Screen: O Espetáculo da Aurora Cósmica --- */
+/* --- Loading Screen: A Abertura Elegante --- */
 #loading-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: var(--bg-dark);
+    background-color: var(--bg-main);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 9999;
     color: var(--text-light);
-    font-family: var(--font-heading);
     text-align: center;
     overflow: hidden;
     opacity: 1;
-    transition: opacity 0.6s ease-out;
 }
 
-#star-canvas { /* Canvas para as estrelas e efeitos de névoa */
+.loading-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
-    opacity: 0.7;
-    filter: brightness(0.9) contrast(1.2);
+    background: radial-gradient(circle at center, rgba(var(--primary-color), 0.3) 0%, transparent 70%);
+    opacity: 0; /* Animado via JS */
+    will-change: transform, opacity;
 }
 
 .loading-content {
@@ -101,7 +99,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transform: translateY(20px); /* Para animação inicial */
+    transform: translateY(20px);
     opacity: 0; /* Animado via JS */
 }
 
@@ -109,23 +107,23 @@ body {
     font-family: var(--font-heading);
     font-size: clamp(2.5rem, 6vw, 4.5rem);
     color: var(--primary-color);
-    text-shadow: 0 0 clamp(10px, 2vw, 25px) rgba(255, 105, 180, 0.8);
-    letter-spacing: 0.08em;
+    text-shadow: 0 0 clamp(10px, 2vw, 25px) rgba(160, 100, 255, 0.8);
+    letter-spacing: 0.05em;
     margin-bottom: 0.5rem;
     line-height: 1.1;
-    overflow: hidden; /* Para o efeito de fade-in letra por letra */
+    overflow: hidden;
 }
 
 .loading-title span {
-    display: inline-block; /* Necessário para animar letras individualmente */
+    display: inline-block;
 }
 
 .loading-subtitle {
-    font-family: var(--font-subtitle);
+    font-family: var(--font-body);
     font-size: clamp(1.2rem, 3vw, 2rem);
-    color: var(--secondary-color);
-    text-shadow: 0 0 clamp(5px, 1vw, 12px) rgba(155, 89, 182, 0.6);
-    letter-spacing: 0.04em;
+    color: var(--text-light);
+    opacity: 0.8;
+    letter-spacing: 0.03em;
     padding: 0 var(--padding-sm);
     line-height: 1.3;
 }
@@ -137,7 +135,7 @@ body {
     align-items: center;
     justify-content: flex-start;
     width: 100vw;
-    max-width: 1600px; /* Limite superior para telas muito grandes */
+    max-width: 1200px; /* Um pouco mais contido */
     padding: var(--padding-lg) var(--padding-md);
     box-sizing: border-box;
     opacity: 0;
@@ -159,9 +157,9 @@ body {
 .main-header h1 {
     font-family: var(--font-heading);
     font-size: clamp(3.5rem, 8vw, 6.5rem);
-    color: var(--primary-color);
-    text-shadow: 0 0 clamp(15px, 3vw, 30px) rgba(255, 105, 180, 0.8);
-    letter-spacing: 0.06em;
+    color: var(--secondary-color);
+    text-shadow: 0 0 clamp(15px, 3vw, 30px) rgba(255, 123, 186, 0.8);
+    letter-spacing: 0.04em;
     margin-bottom: 1rem;
     line-height: 1.1;
 }
@@ -169,14 +167,14 @@ body {
 .main-header .subtitle {
     font-family: var(--font-subtitle);
     font-size: clamp(1.4rem, 3vw, 2.2rem);
-    color: var(--secondary-color);
-    text-shadow: 0 0 clamp(7px, 1.5vw, 15px) rgba(155, 89, 182, 0.6);
-    letter-spacing: 0.04em;
+    color: var(--text-light);
+    opacity: 0.9;
+    letter-spacing: 0.02em;
     padding: 0 var(--padding-sm);
     line-height: 1.3;
 }
 
-/* --- Envelope Wrapper: A Constelação Revelada --- */
+/* --- Envelope Wrapper: A Caixa de Segredos --- */
 #envelope-wrapper {
     position: relative;
     width: 100%;
@@ -191,8 +189,8 @@ body {
 #envelope-container {
     position: relative;
     width: clamp(300px, 75vw, 550px);
-    aspect-ratio: 1.6 / 1; /* Proporção mais comum de envelope */
-    perspective: 2000px; /* Mais profundidade */
+    aspect-ratio: 1.6 / 1;
+    perspective: 1500px; /* Reduz a perspectiva para um look mais "plano" */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -207,8 +205,8 @@ body {
     box-shadow: 0 20px 45px rgba(0,0,0,0.55);
     transform-style: preserve-3d;
     transition: transform 0.6s ease-in-out;
-    border: 3px solid var(--envelope-shadow); /* Borda mais definida */
-    overflow: hidden; /* Garante que as bordas do flap não vazem */
+    border: 3px solid var(--envelope-shadow);
+    overflow: hidden;
 }
 
 .envelope .body {
@@ -225,12 +223,12 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 60%; /* Flap um pouco maior */
+    height: 60%;
     background-color: var(--envelope-color);
     border-radius: 0 0 var(--radius-md) var(--radius-md);
     transform-origin: top;
     transform: rotateX(0deg);
-    transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Mais bounce */
+    transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     z-index: 3;
     border-bottom: 4px solid var(--envelope-shadow);
     box-shadow: 0 3px 8px rgba(0,0,0,0.3);
@@ -274,18 +272,18 @@ body {
 
 #open-envelope-btn {
     position: absolute;
-    bottom: clamp(-5rem, -10vw, -8rem); /* Posição fluida */
+    bottom: clamp(-5rem, -10vw, -8rem);
     left: 50%;
     transform: translateX(-50%) scale(0);
     padding: var(--padding-sm) var(--padding-md);
     font-size: clamp(1rem, 2.2vw, 1.4rem);
     font-family: var(--font-subtitle);
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color);
     color: white;
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.7);
+    box-shadow: 0 10px 25px rgba(255, 123, 186, 0.7);
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     display: flex;
     align-items: center;
@@ -297,15 +295,15 @@ body {
     will-change: transform, opacity;
 }
 
-#open-envelope-btn .btn-icon { /* Ícone de emoji, mais leve */
+#open-envelope-btn .btn-icon {
     font-size: clamp(1.4rem, 2.8vw, 1.8rem);
     filter: drop-shadow(0 0 5px rgba(255,255,255,0.8));
     transition: transform 0.3s ease-in-out;
 }
 
 #open-envelope-btn:hover {
-    background-color: #e652a2;
-    box-shadow: 0 12px 30px rgba(255, 105, 180, 0.9);
+    background-color: #e662aa;
+    box-shadow: 0 12px 30px rgba(255, 123, 186, 0.9);
     transform: translateX(-50%) scale(1.1);
 }
 
@@ -315,7 +313,7 @@ body {
 
 #open-envelope-btn:active {
     transform: translateX(-50%) scale(0.95);
-    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.5);
+    box-shadow: 0 5px 15px rgba(255, 123, 186, 0.5);
 }
 
 /* --- Carta Aberta: O Toque Mágico --- */
@@ -336,31 +334,19 @@ body {
     transform-origin: center center;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: hidden; /* O conteúdo da carta terá seu próprio scroll */
     will-change: transform, opacity, filter;
-    border: 1px solid rgba(0,0,0,0.05); /* Borda sutil para dar acabamento */
-}
-
-#letter-particles-canvas { /* Canvas para partículas da carta */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    border-radius: var(--radius-lg);
-    opacity: 0.7;
-    pointer-events: none;
-    filter: blur(0.5px); /* Suaviza as partículas */
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
 .letter-paper-content {
     position: relative;
     height: 100%;
     width: 100%;
-    overflow-y: auto;
-    padding-right: clamp(0.5rem, 1.5vw, 1rem);
+    overflow-y: auto; /* Permite scroll apenas do conteúdo da carta */
+    padding-right: clamp(0.5rem, 1.5vw, 1rem); /* Espaço para a scrollbar */
     color: var(--text-dark);
+    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
 }
 
 /* Custom scrollbar para Webkit browsers (Chrome, Safari, Edge) */
@@ -374,40 +360,39 @@ body {
 }
 
 .letter-paper-content::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, var(--secondary-color), var(--tertiary-color));
+    background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
     border-radius: 10px;
     border: 1px solid var(--card-bg);
 }
 
 .letter-paper-content::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(to bottom, #a977c7, #3ac282);
+    background: linear-gradient(to bottom, #8a57cf, #e662aa);
 }
 
 .letter-header {
     text-align: center;
     margin-bottom: clamp(2rem, 4vw, 3rem);
     font-family: var(--font-signature);
-    color: var(--secondary-color);
+    color: var(--primary-color);
     font-size: clamp(1.8rem, 4vw, 2.8rem);
     line-height: 1.3;
-    text-shadow: 0 0 6px rgba(155, 89, 182, 0.3);
+    text-shadow: 0 0 6px rgba(160, 100, 255, 0.3);
 }
 
 .letter-body h2 {
     font-family: var(--font-heading);
     font-size: clamp(1.6rem, 3.5vw, 2.5rem);
-    color: var(--primary-color);
+    color: var(--secondary-color);
     margin-bottom: clamp(1.2rem, 2.5vw, 1.8rem);
     text-align: center;
-    text-shadow: 0 0 4px rgba(255, 105, 180, 0.2);
+    text-shadow: 0 0 4px rgba(255, 123, 186, 0.2);
 }
 
 .letter-body p {
     margin-bottom: clamp(1.2rem, 2.5vw, 1.8rem);
     text-align: justify;
     font-family: var(--font-body);
-    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-    line-height: 1.8; /* Mais espaçamento para leitura */
+    line-height: 1.8;
     color: var(--text-dark);
 }
 
@@ -416,10 +401,10 @@ body {
     margin-top: clamp(3rem, 6vw, 4.5rem);
     font-family: var(--font-signature);
     font-size: clamp(2.2rem, 5vw, 3.5rem);
-    color: var(--tertiary-color);
+    color: var(--primary-color);
     font-weight: bold;
     line-height: 1.2;
-    text-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+    text-shadow: 0 0 8px rgba(160, 100, 255, 0.5);
 }
 
 .letter-body .ps {
@@ -435,17 +420,17 @@ body {
     margin-top: clamp(1.5rem, 3vw, 2.2rem);
     font-size: clamp(2.5rem, 5.5vw, 4rem);
     font-family: var(--font-signature);
-    color: var(--primary-color);
+    color: var(--secondary-color);
     font-weight: bold;
     line-height: 1.1;
-    text-shadow: 0 0 12px rgba(255, 105, 180, 0.6);
+    text-shadow: 0 0 12px rgba(255, 123, 186, 0.6);
 }
 
 /* --- Otimização de Performance para Mobile (Hover) --- */
 @media (hover: none) and (pointer: coarse) {
     #open-envelope-btn:hover {
         transform: translateX(-50%) scale(1);
-        box-shadow: 0 10px 25px rgba(255, 105, 180, 0.7);
+        box-shadow: 0 10px 25px rgba(255, 123, 186, 0.7);
     }
     #open-envelope-btn:hover .btn-icon {
         transform: scale(1);
